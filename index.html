@@ -1,0 +1,125 @@
+<html>
+<head>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<style>
+body { font-family: "Open Sans"; }
+svg { border: solid black 1px; 
+      }
+button { padding: 5px; }
+</style>
+</head>
+    
+<body>
+
+    
+<input type="range" name="rangeInput" min="0" max="133" onchange="updateTextInput(this.value);" step="1" value = "0"
+style="width: 500px; height: 0px;">  
+
+<p>
+
+<div>
+
+<script>
+    
+ function updateTextInput(value) {
+     update(value)
+ } 
+
+var height=500;
+var width=500;
+var xScale,yScale;
+
+
+    
+var svgContainer = d3.select("body").append("svg")
+                                    .attr("width", width)
+                                    .attr("height", height);
+//initail state must be the level at start year
+var rectangle = svgContainer.append("rect")
+                             .attr("x", 0)
+                             .attr("y", 450)//need to change to yscale
+                             .attr("width", 500)
+                             .attr("height", 500)
+                             .attr("fill", "#e6f2ff")
+                            
+    
+var lineData = [{ "x": 0,   "y": 50},  { "x": 100,  "y": 0},
+                    { "x": 180,  "y": 50}, { "x": 300,   "y": 0},
+               { "x": 350,   "y": 50},{ "x": 400,   "y": 0},{ "x": 500,   "y": 50}];
+   
+var lineFunction = d3.svg.line()
+      .interpolate("basis")
+      .x(function(d) { return d.x; })
+      .y(function(d) { return d.y; })
+   
+    
+  
+var wave=svgContainer.append("path")
+                     .attr("d", lineFunction(lineData))
+                     .attr("transform", "translate(0,400)")
+                     .attr("fill", "#e6f2ff");
+
+var sealine=[];
+var svg = d3.select("svg");
+    
+d3.csv("sealevelyear.csv", function (error, data) {
+
+    
+	sealevel = data;
+
+	sealine = sealevel.map(function (sea) {
+		return {
+			     x:sea["Year"],
+		 	     y:Number(sea["CSIRO - Adjusted sea level (inches)"]) 
+               };
+	})
+	//circles = svg.selectAll(".sealine").data(sealine).enter().append("text");
+    console.log(sealine);
+    
+})
+
+function update(time){
+   // console.log(time);
+   //related time from csv
+  // time=
+    
+    xScale = d3.scale.linear().domain(d3.extent(sealine, function (point) {
+           return point.x;
+	      })).range([0, width]);
+	
+    yScale = d3.scale.linear().domain(d3.extent(sealine, function (point) {
+		 //   console.log(point.y);
+            return point.y;
+	      })).range([height-50, 300]);    
+   
+    var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(20);
+    
+    svg.append("g")
+    .attr("class", "axis")
+    .attr("transform", "translate(40,0)")
+    .call(yAxis);
+
+    var attrY=yScale(sealine[time].y);
+    console.log(sealine[time].y);
+    console.log(attrY);
+    
+    rectangle.attr("transform", "translate(0," + (attrY-450) + ")")
+    wave.attr("transform", "translate(0," + (attrY-50) + ")")
+    
+}
+    
+    
+    
+    
+</script>
+    
+
+
+</div>
+<p>
+    
+    
+    
+</body>
+</html>
