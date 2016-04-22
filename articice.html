@@ -3,6 +3,30 @@
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <style>
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: #000;
+            shape-rendering: crispEdges;
+        }
+        
+        .axis text {
+            font-family: sans-serif;
+            font-size: 11px;
+        }
+        
+        .circle {
+            stroke: grey;
+            stroke-width: 0;
+            fill: #444;
+        }
+        .dot{
+          opacity:1.25;
+        }
+        
+        p {
+            font-size: 18px;
+        }
 body { font-family: "Open Sans"; }
 svg { border: solid black 1px; 
       }
@@ -35,9 +59,10 @@ var rectangle = svgContainer.append("rect")
                              .attr("y", 450)//need to change to yscale
                              .attr("width", 500)
                              .attr("height", 500)
-                             .attr("fill", "#f0ecee")    
-                             var lineData = [{ "x": 0,   "y": 50},  { "x": 100,  "y": 0},
-                    { "x": 180,  "y": 50}, { "x": 300,   "y": 0},
+                             .attr("fill", "#cddff5")  
+                             .attr('opacity','.35');  
+                             var lineData = [{ "x": 0,   "y": 50},  { "x": 100,  "y": 50},
+                    { "x": 180,  "y": 50}, { "x": 300,   "y": 30},
                { "x": 350,   "y": 50},{ "x": 400,   "y": 0},{ "x": 500,   "y": 50}];
    
 var lineFunction = d3.svg.line()
@@ -49,49 +74,50 @@ var lineFunction = d3.svg.line()
 var wave=svgContainer.append("path")
                      .attr("d", lineFunction(lineData))
                      .attr("transform", "translate(0,400)")
-                     .attr("fill", "#f0ecee");
+                     .attr("fill", "#cddff5").attr('opacity','.35');
 var glacierline=[];
 var svg = d3.select("svg");
-    
+
 d3.csv("N_09_area.csv", function (error, data) {
     
   extent = data;
   glacierline = extent.map(function (area) {
     return {
-           x:area["Year"],
-           y:Number(area["extent"]) 
+           y:area["Year"],
+           x:Number(area["extent"]) 
                };
   })
   //circles = svg.selectAll(".sealine").data(sealine).enter().append("text");
     console.log(glacierline);
     
 })
+
 function update(time){
    // console.log(time);
    //related time from csv
   // time=
     
-    xScale = d3.scale.linear().domain(d3.extent(glacierline, function (point) {
+    xScale = d3.scale.linear().domain([1,d3.max(glacierline, function (point) {
            return point.x;
-        })).range([0, width]);
+        })]).range([0, width]);
   
     yScale = d3.scale.linear().domain(d3.extent(glacierline, function (point) {
      //   console.log(point.y);
             return point.y;
         })).range([height-50, 300]);    
    
-    var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(20);
+    var xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(15);
     
     svg.append("g")
     .attr("class", "axis")
-    .attr("transform", "translate(40,0)")
-    .call(yAxis);
-    var attrY=yScale(glacierline[time].y);
-    console.log(glacierline[time].y);
-    console.log(attrY);
+    .attr("transform", "translate(0,450)")
+    .call(xAxis);
+    var attrX=xScale(glacierline[time].x);
+    console.log(glacierline[time].x);
+    console.log(attrX);
     
-    rectangle.attr("transform", "translate(0," + (attrY-450) + ")")
-    wave.attr("transform", "translate(0," + (attrY-50) + ")")
+    rectangle.attr("transform", "translate("+ (attrX-500) + ",0)")
+    wave.attr("transform", "translate("+(attrX-500) + ",400)")
     
 }
     
@@ -187,44 +213,7 @@ function update(time){
                     "x": 18, "y": 152
                     },];
 
-                    var glacier=[{
-          
-                    
-                    "x": 18, "y": 153},
-                    {
-                      "x":78, "y":150},
-                      {
-                      "x":128, "y":147},
-                    {
-                      "x":243, "y":150},
-                      {
-                      "x":344, "y":203},
-                      {
-                      "x":360, "y":240},
-                      {
-                      "x":295, "y":270},
-                      {
-                      "x":260, "y":300},
-                      {
-                      "x":260, "y":340},
-                      {
-                      "x":218, "y":375},
-                      {
-                      "x":202, "y":350},
-                      {
-                      "x":170, "y":390},
-                      {
-                      "x":120, "y":334},
-                      {
-                      "x":70, "y":300},
-                      {
-                      "x":50, "y":270},
-                      {
-                      "x":10, "y":200},
-                      {
-                      "x":18, "y":153},
-
-                     ];
+    
 
                     var lineSmooth = d3.svg.line().x(function(d) {
                             return d.x;
@@ -239,19 +228,12 @@ function update(time){
                         .y(function(d) {
                             return d.y;
                         });
-                     //Adds a cream-colored gradient inside the milk bottle 
-                    var grad = svgContainer.append("defs").append("linearGradient").attr("id", "grad").attr("x1", "0%").attr("x2", "0%").attr("y1", "100%").attr("y2", "0%");
-                    grad.append("stop").attr("offset", "100%").style("stop-color", "#F5F5F5").append("path");
-                    grad.append("stop").attr("offset", "100%").style("stop-color", "#F5F5F5");
-
-                    //Adds a cream-colored gradient inside the milk bottle 
-                    var grad2 = svgContainer.append("defs").append("linearGradient").attr("id", "grad").attr("x1", "0%").attr("x2", "0%").attr("y1", "100%").attr("y2", "0%");
-                    grad.append("stop").attr("offset", "100%").style("stop-color", "white").append("path");
-                    grad.append("stop").attr("offset", "100%").style("stop-color", "white");
+                     
                      //Adds a path with lineFunction and draws out the milk bottle svg element
-                    svgContainer.append("path").attr("d", lineSmooth(polarbear)).attr("stroke", "#1E1E1E").attr("stroke-width", 3).attr("fill", "url(#grad)").attr("transform", "scale(.5,.5),translate(21.21,500)");
+                    svgContainer.append("path").attr("d", lineSmooth(polarbear)).attr("stroke", "#1E1E1E").attr("stroke-width", 1).attr("fill", "#F5F5F5").attr("transform", "scale(.5,.5),translate(21.21,750)");
 
-                   svgContainer.append("path").attr("d", lineJagged(glacier)).attr("stroke", "#1E1E1E").attr("stroke-width", 3).attr("fill", "url(#grad2)").attr("transform", "scale(.5,.5),translate(21.21,500)");  
+                    
+                  
 
     
 </script>
