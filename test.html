@@ -17,7 +17,27 @@ p {
 a {
   color: #4FDEF2;
 }
-input[type='range'] {
+input[type='range']{
+  width:480;
+  -webkit-appearance: none;
+    background-color: #E6F2FF;
+    height:20px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+     -webkit-appearance: none;
+    background-color: #C9F2F5;
+    opacity:.5;
+    width: 10px;
+    height: 26px;
+}
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+/*input[type='range'] {
   box-sizing: border-box;
   border: 0px solid transparent;
   padding: 0px;
@@ -29,9 +49,9 @@ input[type='range'] {
   background: -moz-repeating-linear-gradient(90deg, #777, #777 1px, transparent 1px, transparent 40px) no-repeat 0% 50%;
   background: repeating-linear-gradient(90deg, #777, #777 1px, transparent 1px, transparent 40px) no-repeat 0% 50%;*/
   
-  background-size: 500px 25px;
+ /* background-size: 500px 25px;
   font-size: 16px;
-}
+}*//*
 input[type='range'],
 input[type='range']::-webkit-slider-runnable-track,
 input[type='range']::-webkit-slider-thumb {
@@ -94,7 +114,7 @@ input[type="range"]::-ms-fill-lower {
 }
 input[type='range']:focus {
   outline: none;
-}
+}*/
 /*input[type='range']:after{
   position: absolute;
   content: '20 40 60 80';
@@ -103,14 +123,13 @@ input[type='range']:focus {
   left: 0px;
   top: 0px;
 }*/
-
+/*
 .container:after {
   position: absolute;
   color: #777;
-  font-size:13px;
-  content: '1979 1984 1989 1994 1999 2004 2009 2013';
+  content: '1979             2013';
   padding-top: 50px;
-  word-spacing: 29px;
+  word-spacing: 430px;
   left: 0px;
   top: 0px;
   z-index: -1;
@@ -119,29 +138,39 @@ input[type='range']:focus {
   padding-left: 0px;
   position: relative;
 }
-    }
+    }*/
 </style>
 </head>
     
 <body>
-<script>
-$('input').on('change', function(){
-  alert($(this).val());
-})    
-</script>
-<div class="container">
-  <input type="range" min="0" max="34" value="0" on oninput="updateTextInput(this.value)" step="1" list="tickmarks" id="rangeInput">
-  <datalist id="tickmarks">
-    <option value="0 to 20">0</option>
-    <option>20</option>
-    <option>40</option>
-    <option>60</option>
-    <option>80</option>
-    <option>100</option>
-  </datalist>
+<div style="position:relative; margin-left:10px;width:90%">
+    <span style="position:absolute; color:#bac2ff; margin-left:40px; min-width:100px; max-width:300px;">
+    <span id="myValue"></span>
+    </span>
+  <input type="range" id="myRange" min="0" max="34" value="0" on onchange="updateTextInput(this.value)" step="1">
 </div>
 
+<script type="text/javascript" charset="utf-8">
+var myRange = document.querySelector('#myRange');
+var myValue = document.querySelector('#myValue');
+var myUnits = 'myUnits';
+var off = myRange.offsetWidth / (parseInt(myRange.max) - parseInt(myRange.min));
+var px =  ((myRange.valueAsNumber - parseInt(myRange.min)) * off) - (myValue.offsetParent.offsetWidth / 2);
+
+  myValue.parentElement.style.left = px + 'px';
+  myValue.parentElement.style.top = myRange.offsetHeight + 'px';
+  myValue.innerHTML = +myRange.value + 1979;
+
+  myRange.oninput =function(){
+    updateTextInput(this.value);
+    let px = ((myRange.valueAsNumber - parseInt(myRange.min)) * off) - (myValue.offsetWidth / 2)-40;
+    myValue.innerHTML = +myRange.value + 1979;
+    myValue.parentElement.style.left = px + 'px';
+  };
+  </script>
+
 <script> 
+
  function updateTextInput(value) {
      update(value);
      addcloud(value);
