@@ -1,471 +1,84 @@
 <html>
+
 <head>
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-<style>
-body { font-family: "Open Sans"; }
-svg { border: solid black 1px; 
-      }
-button { padding: 5px; }
-</style>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="js/jquery-1.12.1.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <script src="js/bootstrap.min.js"></script>
+ <style>
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: #000;
+            shape-rendering: crispEdges;
+        }
+        
+        .axis text {
+            font-family: sans-serif;
+            font-size: 11px;
+        }
+        
+        .circle {
+            stroke: grey;
+            stroke-width: 0;
+            fill: #444;
+        }
+        .dot{
+          opacity:1.25;
+        }
+        h1{
+        	font-size:57px !important;
+        }
+        p {
+            font-size: 18px;
+        }
+    </style>
 </head>
-    
+
 <body>
 
-    
-<input type="range" name="rangeInput" min="0" max="56" on oninput="updateTextInput(this.value);" step="1" value = "0"
-style="width: 500px; height: 0px;">  
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#top">Analysis into the Causes and Effects of Global Warming Over Time</a>
+            </div>
+        </div>
+    </nav>
+    <br><br>
 
-<p>
+    <div class="jumbotron">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10">
+                <h1>What's Really Warming the World?</h1>
+                    <p> </p>
+                </div>
 
-<div>
+                <div class="col-md-2">
+                    <img src="images/polarbear.png" height="220" width="220">
+                </div>
+            </div>
+        </div>
+    </div>
 
-<script>
-    
- function updateTextInput(value) {
-     update(value);
-     addcloud(value);
- } 
-
-var height=500;
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+            <script>
+            var height=500;
 var width=500;
-var xScale,yScale;
-
-
-    
-var svgContainer = d3.select("body").append("svg")
+            var svgContainer = d3.select("body").append("svg")
                                     .attr("width", width)
                                     .attr("height", height);
-//initail state must be the level at start year
-var rectangle = svgContainer.append("rect")
-                             .attr("x", 0)
-                             .attr("y", 450)//need to change to yscale
-                             .attr("width", 500)
-                             .attr("height", 500)
-                             .attr("fill", "#e6f2ff")    
+            var co2C = [{"x": 77, "y": 43
+                    },{"x":41, "y": 35}, {"x":21,"y":45},{"x":11,"y":60},{"x":13,"y":105},{"x":28,"y":125},{"x":63,"y":130},{"x":83,"y":122},{"x":78,"y":114},{"x":42,"y":116},{"x":34,"y":109},{"x":27,"y":83},{"x":33,"y":49},{"x":77,"y":49},{"x":77,"y":43}];
+            var co2O=[{"x":92,"y":113},{"x":95,"y":50},{"x":113,"y":37},{"x":146,"y":38},{"x":160,"y":47},{"x":161,"y":115},{"x":139,"y":131},{"x":109,"y":128},{"x":92,"y":113}];
 
-var lineData = [{ "x": 0,   "y": 50},  { "x": 100,  "y": 0},
-                    { "x": 180,  "y": 50}, { "x": 300,   "y": 0},
-               { "x": 350,   "y": 50},{ "x": 400,   "y": 0},{ "x": 500,   "y": 50},  { "x": 650,  "y": 0}, { "x": 700,  "y": 50},
-                { "x": 780,  "y": 0}, { "x": 840,  "y": 50}];
-   
-var lineFunction = d3.svg.line()
-      .interpolate("basis")
-      .x(function(d) { return d.x; })
-      .y(function(d) { return d.y; })
-   
-    
-  
-var wave=svgContainer.append("path")
-                     .attr("d", lineFunction(lineData))
-                     .attr("transform", "translate(0,400)")
-                     .attr("fill", "#e6f2ff");
-    
-//initail state must be the level at start year
-var rectangle1 = svgContainer.append("rect")
-                             .attr("x", 0)
-                             .attr("y", 440)//need to change to yscale
-                             .attr("width", 500)
-                             .attr("height", 80)
-                             .attr("fill", "#C9F2F5")
-//.attr("opacity",0.3);  
+            var co2Ohole=[{"x":115,"y":53},{"x":142,"y":50},{"x":148,"y":64},{"x":145,"y":108},{"x":130,"y":120},{"x":110,"y":109},{"x":107,"y":101},{"x":115,"y":53}];
 
-var icelineData = [{ "x": 0,   "y": 50},  { "x": 100,  "y": 50},
-                { "x": 180,  "y": 50}, { "x": 300,   "y": 30},
-                { "x": 350,   "y": 50},{ "x": 400,   "y": 0},
-                { "x": 500,   "y": 50}];
-   
-var lineFunction3 = d3.svg.line()
-      .x(function(d) { return d.x; })
-      .y(function(d) { return d.y; })
-   
-    
-  
-var icewave=svgContainer.append("path")
-                     .attr("d", lineFunction3(icelineData))
-                     .attr("transform", "translate(0,400)")
-                     .attr("fill", "#C9F2F5");
-var glacierline=[];    
-    
-    
-
-//co2 bubble
-//var bubble = svgContainer.append("circle").attr("r", 5).attr("cx", 10).attr("cy",10);    
-var lineFunction2 = d3.svg.line()
-      .interpolate("cardinal")
-      .x(function(d) { return d.x; })
-      .y(function(d) { return d.y; })
-    
-  var clouddata = [{
-                        "x": 256, "y": 356
-                    }, {
-                        "x":252, "y": 308
-                    }, {
-                        "x": 324, "y": 260
-                    }, {
-                        
-                        "x": 476, "y": 200
-                    }, {
-                        "x": 608, "y": 200
-                    }, {
-                        "x": 804, "y": 100
-                    }, {
-                        "x": 916, "y": 100
-                    }, {
-                        "x": 960, "y": 110
-                    },{
-                    	"x": 1004, "y": 110
-                    },{
-                    	"x": 1120, "y": 80
-                    },{
-                    	"x": 1332, "y": 60
-                    
-                    },
-                    {
-                    	"x": 1492, "y": 70
-                    
-                    },
-                    {
-                    	"x": 1600, "y": 70
-                    
-                    },
-                    {
-                    	"x": 1712, "y": 100
-                    
-                    },{
-                    	"x": 1770, "y": 152
-                    
-                    },{
-                    	"x": 1984, "y": 136
-                    
-                    },{
-                    	"x": 2164, "y": 215
-                    
-                    },{
-                    	"x": 2204, "y": 285
-                    
-                    },{
-                    	"x": 2452, "y": 344
-                    
-                    },{
-                    	"x": 2496, "y": 420
-                    
-                    },
-                    {
-                    	"x": 2436, "y": 504
-                    
-                    },{
-                    	"x": 2224, "y": 576
-                    
-                    },{
-                    	"x": 1896, "y": 688
-                    
-                    },{
-                    	"x": 1524, "y": 652
-                    
-                    },{
-                    	"x": 1148, "y": 696
-                    
-                    },{
-                    	"x": 812, "y": 620
-                    
-                    },{
-                    	"x": 644, "y": 644
-                    
-                    },{
-                    	"x": 500, "y": 608
-                    
-                    },{
-                    	"x": 96, "y": 584
-                    
-                    },{
-                    	"x": 4, "y": 476
-                    
-                    },{
-                    	"x": 28, "y": 424
-                    
-                    },{
-                        "x": 256, "y": 356
-                    },];
-
-var cloud=svgContainer.append("path")
-                      .attr("d", lineFunction2(clouddata))
-                      .attr("transform", "translate(60,0) scale(0.15)")
-                      .style("fill", "white");
-
-
-    
-    
-    
-var sealine=[];
-var svg = d3.select("svg");
-    
-d3.csv("sealevelyear.csv", function (error, data) {
-
-    
-	sealevel = data;
-
-	sealine = sealevel.map(function (sea) {
-		return {
-			     x:sea["Year"],
-		 	     y:Number(sea["CSIRO - Adjusted sea level (inches)"]) 
-               };
-	})
-	//circles = svg.selectAll(".sealine").data(sealine).enter().append("text");
-  //  console.log(sealine);
-    
-})
-
-d3.csv("co2year.csv", function (error, data) {
-
-    
-	co2level = data;
-
-	co2bubble = co2level.map(function (co2) {
-		return {
-			     x:co2["Year"],
-		 	     y:Number(co2["Mean"]) 
-               };
-	})
-	
-   console.log(co2bubble);
-    
-})
-
-
-function drawco2(number){
-    
-    var co2location=[{x:10,y:20},{x:15,y:20},{x:18,y:30}];
-
-    circles = svg.selectAll(".point").data(co2location);
-
-	// Create a mouseover callback that lists country names
-	circles.enter().append("circle")
-	.attr("class", "point")
-	.attr("cx", function(d) { return d.x; })
-	.attr("cy", function(d) { return d.y; })
-	.attr("r", 3)
-	.style("fill", drawcolor(number) ? "red" : "black")//false: black
-	.style("opacity", 0.5)
-	.on("mouseover", function (d) {
-		d3.select("#location").text(d.label);
-	});    
-}
-    
-    
-d3.csv("N_09_area.csv", function (error, data) {
-    
-  extent = data;
-  glacierline = extent.map(function (area) {
-    return {
-           y:area["Year"],
-           x:Number(area["extent"]) 
-               };
-  })
-  //circles = svg.selectAll(".sealine").data(sealine).enter().append("text");
-    console.log(glacierline);
-    
-})
-function drawcolor(number){
-        
-        return false;
-}
-    
-
-    
-
-function update(time){
-//sea level
-  
-	
-    yScale = d3.scale.linear().domain(d3.extent(sealine, function (point) {
-		 //   console.log(point.y);
-            return point.y;
-	      })).range([height-50, 300]);    
-   
-    var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(20);
-    
-  //  svg.append("g")
-    //.attr("class", "axis")
-    //.attr("transform", "translate(40,0)")
-    //.call(yAxis);
-
-    var attrY=yScale(sealine[(time)].y);
-  
-    rectangle.attr("transform", "translate(0," + (attrY-450) + ")")
-    wave.attr("transform", "translate(" + (-time*2)+ "," + (attrY-50) + ")")
-  
-    xScale = d3.scale.linear().domain([1,d3.max(glacierline, function (point) {
-           return point.x;
-        })]).range([0, width]);
-  
-   
-    var xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(15);
-    
-  //  svg.append("g")
-//    .attr("class", "axis")
-  //  .attr("transform", "translate(0,450)")
-//    .call(xAxis);
-    
-    var attrX=xScale(glacierline[time].x);
-    
-    rectangle1.attr("transform", "translate("+ (attrX-500) + "," + (attrY-500) + ")")
-    icewave.attr("transform", "translate("+(attrX-500) + ", "+(attrY-109)+")")
-    
-    polarb.attr("transform", "translate(0," + (attrY-180) + ") scale(0.8)")
-    
-
-
-}
-    
-function addbubble(time){
-   
-    
-   // for(i=0;i<time/2;i++){
-    //CO2 level
- 
-    
-  var bb = svgContainer.append("circle").attr("r", 5).attr("cx", 10).attr("cy",10);    
-    
-   bb
-	.transition().duration(100)
-	.attr("cx", 10+time/2)
-	.attr("cy", time)
-	.attr("opacity", 0.7)
-	.attr("stroke-width", 3)
-	.attr("fill", "red")
- //   }
-    
-    
-}
-    
-function addcloud(time){
-   var cloudcolor = d3.scale.linear()
-    .domain(d3.extent(co2bubble, function (point) 
-    {
-         return point.y;
-        }))
-    .range(["white", "grey"]);
-
-  var attrcolor=cloudcolor(co2bubble[time].y);
-    
-  cloud.style("fill", attrcolor )
-       .attr("opacity",0.8);//false: black
-    
-     
-     var attrY=yScale(sealine[time].y);
-    
-   //  co2.attr("transform", "scale("+time+")");
-    
-   // for(i=0;i<time/2;i++){
-    //CO2 level
- 
-    
-//    var bb = svgContainer.append("circle").attr("r", 5).attr("cx", 10).attr("cy",10);    
-    
- //   bb
-	//.transition().duration(100)
-//	.attr("cx", 10+time/2)
-//	.attr("cy", time)
-//	.attr("opacity", 0.7)
-//	.attr("stroke-width", 3)
-//	.attr("fill", "red")
- //   }
-    
-    
-}
- 
-     var leftPadding = 50;
-                    var topPadding = 200;
-                    //Coordinates for the svg polar bear
-                    var polarbear = [{
-                        "x": 18, "y": 152
-                    }, {
-                        "x": 9, "y": 130
-                    }, {
-                        "x": 38, "y": 90
-                    }, {
-                        "x": 54, "y": 53
-                    }, {
-                        "x": 54, "y": 45
-                    }, {
-                        "x": 70, "y": 28
-                    }, {
-                        "x": 98, "y": 22
-                    }, {
-                        "x": 168, "y": 28
-                    }, {
-                        "x": 181, "y": 26
-                    }, {
-                        "x": 243, "y": 45
-                    },{
-                      "x": 250, "y": 44
-                    },
-                    {
-                      "x": 274, "y": 64
-                    }
-                    ,{
-                      "x": 275, "y": 70
-                    
-                    },{
-                      "x": 288, "y": 85
-                    
-                    },{
-                    "x": 273, "y": 97
-                    },{
-                    "x": 249, "y": 91
-                    },{
-                    "x": 210, "y": 92
-                    },{
-                    "x": 221, "y": 125
-                    },{
-                    "x": 234, "y": 140
-                    },
-                    {
-                    "x": 239, "y": 140
-                    }, {
-                    "x": 243, "y": 149
-                    },{
-                    "x": 202, "y": 149
-                    },{
-                    "x": 179, "y": 122
-                    },{
-                    "x": 174, "y": 140
-                    },{
-                    "x": 185, "y": 142
-                    },{
-                    "x": 190, "y": 151
-                    }, {
-                    "x": 148, "y": 151
-                    },{
-                    "x": 140, "y": 132
-                    },{
-                    "x": 140, "y": 109
-                    },{
-                    "x": 123, "y": 108
-                    },{
-                    "x": 112, "y": 134
-                    },{
-                    "x": 124, "y": 138
-                    },{
-                    "x": 129, "y": 145
-                    },{
-                    "x": 78, "y": 146
-                    },{
-                    "x": 82, "y": 114
-                    },{
-                    "x":50, "y": 131
-                    },{
-                    "x": 46, "y": 138
-                    },{
-                    "x": 59, "y": 146
-                    },{
-                    "x": 55, "y": 153
-                    },{
-                    "x": 18, "y": 152
-                    },];
-
-    
+            var co2two=[{"x":183,"y":112},{"x":180,"y":106},{"x":187,"y":103},{"x":197,"y":105},{"x":198,"y":113},{"x":186,"y":128},{"x":199,"y":129},{"x":199,"y":132}, {"x":181,"y":132}, {"x":180,"y":129}, {"x":193,"y":111}, {"x":192,"y":109},{"x":183,"y":112}];
 
                     var lineSmooth = d3.svg.line().x(function(d) {
                             return d.x;
@@ -474,31 +87,40 @@ function addcloud(time){
                             return d.y;
                         }).interpolate("cardinal");
 
-                    var lineJagged = d3.svg.line().x(function(d) {
-                            return d.x;
-                        })
-                        .y(function(d) {
-                            return d.y;
-                        });
-                     
-                     //Adds a path with lineFunction and draws out the milk bottle svg element
-     polarb= svgContainer.append("path")
-                            .attr("d", lineSmooth(polarbear))
+                         cloudC= svgContainer.append("path")
+                            .attr("d", lineSmooth(co2C))
                             .attr("stroke", "#1E1E1E")
                             .attr("stroke-width", 1)
-                            .attr("fill", "#F5F5F5")
-                            .attr("transform", "scale(.5,.5),translate(21.21,750)");
+                            .attr("fill", "#F4F5F9")
+                            .attr("transform", "scale(2,2)");
 
-    
-    
-</script>
-    
+                        cloudO=svgContainer.append("path")
+                            .attr("d", lineSmooth(co2O))
+                            .attr("stroke", "#1E1E1E")
+                            .attr("stroke-width", 1)
+                            .attr("fill", "#F4F5F9")
+                            .attr("transform", "scale(2,2)");
 
+                        cloudO=svgContainer.append("path")
+                            .attr("d", lineSmooth(co2Ohole))
+                            .attr("stroke", "#1E1E1E")
+                            .attr("stroke-width", 1)
+                            .attr("fill", "#F4F5F9")
+                            .attr("transform", "scale(2,2)");
 
-</div>
-<p>
-    
-    
-    
+                         cloud2=svgContainer.append("path")
+                            .attr("d", lineSmooth(co2two))
+                            .attr("stroke", "#1E1E1E")
+                            .attr("stroke-width", 1)
+                            .attr("fill", "#F4F5F9")
+                            .attr("transform", "scale(2,2)");
+            </script>
+                <h3></h3>
+                <p></p>
+                <blockquote></blockquote>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>
