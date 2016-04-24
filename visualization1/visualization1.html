@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset= "utf-8">
+		<script src="http://d3js.org/d3.v3.min.js"></script>
+		<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+		<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+		
+		<style>
+			body { font-family: "Open Sans"; }
+			div { margin: 30px; }
+			svg { background-color: #eee; }
+			.axis path { fill: none; stroke: black; }
+			.axis line { stroke: black; }
+			.axis text { font-size: 10pt; }
+			path.outline { fill: none; stroke-width: 2.5;}
+			path.plot { fill: none; stroke-width: 3; }
+			path.fade{ fill : none ; stroke-width:1 ;stroke:grey; opacity: 0.2;}
+			.voronoi path {
+			  fill: none;
+			  pointer-events: all;
+			}
+			.d3-tip {
+			  line-height: 1;
+			  font-weight: bold;
+			  padding: 12px;
+			  background: rgba(0, 0, 0, 0.8);
+			  color: #fff;
+			  border-radius: 2px;
+			}
+			/* Creates a small triangle extender for the tooltip */
+			.d3-tip:after {
+			  box-sizing: border-box;
+			  display: inline;
+			  font-size: 10px;
+			  width: 100%;
+			  line-height: 1;
+			  color: rgba(0, 0, 0, 0.8);
+			  content: "\25BC";
+			  position: absolute;
+			  text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="causes"></div>
+		<script src="visualization1.js"></script>
+	</body>
+</html>
