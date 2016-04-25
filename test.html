@@ -1,6 +1,7 @@
 <html>
 <head>
 <script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
 <style>
@@ -46,6 +47,11 @@ textarea:focus,
 button:focus {
     outline: none;
 }
+.selectedBar{
+  fill: antiquewhite !important;
+}
+  
+
 /*input[type='range'] {
   box-sizing: border-box;
   border: 0px solid transparent;
@@ -152,12 +158,12 @@ input[type='range']:focus {
 </head>
     
 <body>
-<div style="position:relative; margin-left:10px;width:90%">
+<div style="position:relative; margin-left:30px;width:90%">
     <span style="position:absolute; color:#6BACFE; margin-left:40px; min-width:100px; max-width:300px;">
     <span id="myValue"></span>
     </span>
   <input type="range" id="myRange" min="0" max="34" value="0" on onchange="updateTextInput(this.value)" step="1">
-</div>
+
 
 <script type="text/javascript" charset="utf-8">
 var myRange = document.querySelector('#myRange');
@@ -176,7 +182,12 @@ var px =  ((myRange.valueAsNumber - parseInt(myRange.min)) * off) - (myValue.off
     myValue.innerHTML = +myRange.value + 1979;
     myValue.parentElement.style.left = px + 'px';
   };
-  </script>
+</script>
+</div>
+
+    
+ 
+ <div id="polarbear" style="width: 1200px; margin: 0 auto; background: #black; color: #pink;">
 
 <script> 
 
@@ -188,7 +199,7 @@ var height=500;
 var width=500;
 var xScale,yScale;
     
-var svgContainer = d3.select("body").append("svg")
+var svgContainer = d3.select("#polarbear").append("svg")
                                     .attr("width", width)
                                     .attr("height", height);
 //initail state must be the level at start year
@@ -295,6 +306,8 @@ var lineFunction2 = d3.svg.line()
 var sealine=[];
 var svg = d3.select("svg");
     
+var infoBoard;
+    
 d3.csv("sealevelyear.csv", function (error, data) {
     
 	sealevel = data;
@@ -304,10 +317,11 @@ d3.csv("sealevelyear.csv", function (error, data) {
 		 	     y:Number(sea["CSIRO - Adjusted sea level (inches)"]) 
                };
 	})
-	//circles = svg.selectAll(".sealine").data(sealine).enter().append("text");
-  //  console.log(sealine);
     
-})
+    seax.domain(sealine.map(function(d) { 
+        return d.x; }));
+    })
+
 d3.csv("co2year.csv", function (error, data) {
     
 	co2level = data;
@@ -318,7 +332,9 @@ d3.csv("co2year.csv", function (error, data) {
                };
 	})
 	
-   console.log(co2bubble);
+   co2x.domain(co2bubble.map(function(d) { 
+    return d.x; }));
+    
     
 })
 function drawco2(number){
@@ -344,12 +360,16 @@ d3.csv("N_09_area.csv", function (error, data) {
   extent = data;
   glacierline = extent.map(function (area) {
     return {
-           y:area["Year"],
+           y:area["year"],
            x:Number(area["extent"]) 
                };
   })
-  //circles = svg.selectAll(".sealine").data(sealine).enter().append("text");
+ icex.domain(glacierline.map(function(d) { 
+    return d.y; }));
+    
     console.log(glacierline);
+    
+
     
 })
 function drawcolor(number){
@@ -385,10 +405,9 @@ function update(time){
    
     var xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(15);
     
-  //  svg.append("g")
-//    .attr("class", "axis")
-  //  .attr("transform", "translate(0,450)")
-//    .call(xAxis);
+ 
+    
+    
     
     var attrX=xScale(glacierline[time].x);
   
@@ -397,28 +416,73 @@ function update(time){
     
     polarb.attr("transform", "translate(0," + (attrY-140) + ") scale(0.5,.5)")
     
+       //sea level bar graph
+     var seadata=[];
+    for(i=0;i<time;i++){
+        seadata.push(sealine[i]);
+    }
+    
+    d3.selectAll(".barrect").remove();
+ //   $("seabargraph").remove();//rect 也包括左边图的
+     var searect=svg.selectAll("rect")
+      .data(seadata)//function sealine until now
+      .enter()
+      .append("rect")
+      .attr("class","barrect")
+      .style("fill", "steelblue")//use function to make color of it
+      .attr("x", function(d) { 
+        return seax(d.x); })
+      .attr("width", seax.rangeBand())
+      .attr("y", function(d) { return seay(d.y); })
+      .attr("height", function(d) { return seaheight - seay(d.y); })
+      .attr("id",function(d, i ){d.indicator="svg"; d.id = "svg"+i; return d.id;})
+//     .on("mouseover",mouseover).on("mouseout",mouseout);
+    
+       var co2data=[];
+       for(i=0;i<time;i++){
+         co2data.push(co2bubble[i]);
+      }
+      svg1.selectAll("rect")
+      .data(co2data)//function sealine until now
+      .enter()
+      .append("rect")
+      .attr("class","barrect")
+      .style("fill", function(d){
+       return changeco2color(d.y);
+                                
+      })//use function to make color of it
+      .attr("x", function(d) { 
+        return co2x(d.x); })
+      .attr("width", co2x.rangeBand())
+      .attr("y", function(d) { return co2y(d.y); })
+      .attr("height", function(d) { return co2height - co2y(d.y); })
+.attr("id",function(d, i){d.indicator="svg1"; d.id="svg1"+i; return d.id;})
+ //   .on("mouseover", mouseover).on("mouseout",mouseout);
+      
+      
+    var seaicedata=[];
+    for(i=0;i<time;i++){
+        seaicedata.push(glacierline[i]);
+    }
+      
+      svg2.selectAll("rect")
+      .data(seaicedata)//function sealine until now
+      .enter()
+      .append("rect")
+      .attr("class","barrect")
+      .style("fill", "steelblue")
+      .attr("x", function(d) { 
+        return icex(d.y); })
+      .attr("width", icex.rangeBand())
+      .attr("y", function(d) { 
+      return icey(d.x); })
+      .attr("height", function(d) { return iceheight - icey(d.x); })
+.attr("id",function(d,i){d.indicator="svg2"; d.id="svg2"+i; return d.id;})
+//.on("mouseover",mouseover).on("mouseout",mouseout);
+
+    
 }
     
-function addbubble(time){
-   
-    
-   // for(i=0;i<time/2;i++){
-    //CO2 level
- 
-    
-  var bb = svgContainer.append("circle").attr("r", 5).attr("cx", 10).attr("cy",10);    
-    
-   bb
-	.transition().duration(100)
-	.attr("cx", 10+time/2)
-	.attr("cy", time)
-	.attr("opacity", 0.7)
-	.attr("stroke-width", 3)
-	.attr("fill", "red")
- //   }
-    
-    
-}
     
 function addcloud(time){
    var cloudcolor = d3.scale.linear()
@@ -441,22 +505,6 @@ function addcloud(time){
      
      var attrY=yScale(sealine[time].y);
     
-   //  co2.attr("transform", "scale("+time+")");
-    
-   // for(i=0;i<time/2;i++){
-    //CO2 level
- 
-    
-//    var bb = svgContainer.append("circle").attr("r", 5).attr("cx", 10).attr("cy",10);    
-    
- //   bb
-	//.transition().duration(100)
-//	.attr("cx", 10+time/2)
-//	.attr("cy", time)
-//	.attr("opacity", 0.7)
-//	.attr("stroke-width", 3)
-//	.attr("fill", "red")
- //   }
     
     
 }
@@ -465,91 +513,46 @@ function addcloud(time){
                     var topPadding = 200;
                     //Coordinates for the svg polar bear
                     var polarbear = [{
-                        "x": 18, "y": 152
-                    }, {
-                        "x": 9, "y": 130
-                    }, {
-                        "x": 38, "y": 90
-                    }, {
-                        "x": 54, "y": 53
-                    }, {
-                        "x": 54, "y": 45
-                    }, {
-                        "x": 70, "y": 28
-                    }, {
-                        "x": 98, "y": 22
-                    }, {
-                        "x": 168, "y": 28
-                    }, {
-                        "x": 181, "y": 26
-                    }, {
-                        "x": 243, "y": 45
-                    },{
-                      "x": 250, "y": 44
+                        "x": 18, "y": 152}, {"x": 9, "y": 130
+                    }, {  "x": 38, "y": 90
+                    }, { "x": 54, "y": 53
+                    }, { "x": 54, "y": 45
+                    }, {  "x": 70, "y": 28
+                    }, {  "x": 98, "y": 22
+                    }, {  "x": 168, "y": 28
+                    }, {  "x": 181, "y": 26
+                    }, {  "x": 243, "y": 45
+                    },{ "x": 250, "y": 44
                     },
-                    {
-                      "x": 274, "y": 64
-                    }
-                    ,{
-                      "x": 275, "y": 70
-                    
-                    },{
+                    { "x": 274, "y": 64
+                    } ,{   "x": 275, "y": 70 },{
                       "x": 288, "y": 85
-                    
-                    },{
-                    "x": 273, "y": 97
-                    },{
-                    "x": 249, "y": 91
-                    },{
-                    "x": 210, "y": 92
-                    },{
-                    "x": 221, "y": 125
-                    },{
-                    "x": 234, "y": 140
-                    },
-                    {
-                    "x": 239, "y": 140
-                    }, {
-                    "x": 243, "y": 149
-                    },{
-                    "x": 202, "y": 149
-                    },{
-                    "x": 179, "y": 122
-                    },{
-                    "x": 174, "y": 140
-                    },{
-                    "x": 185, "y": 142
-                    },{
-                    "x": 190, "y": 151
-                    }, {
-                    "x": 148, "y": 151
-                    },{
-                    "x": 140, "y": 132
-                    },{
-                    "x": 140, "y": 109
-                    },{
-                    "x": 123, "y": 108
-                    },{
-                    "x": 112, "y": 134
-                    },{
-                    "x": 124, "y": 138
-                    },{
-                    "x": 129, "y": 145
-                    },{
-                    "x": 78, "y": 146
-                    },{
-                    "x": 82, "y": 114
-                    },{
-                    "x":50, "y": 131
-                    },{
-                    "x": 46, "y": 138
-                    },{
-                    "x": 59, "y": 146
-                    },{
-                    "x": 55, "y": 153
-                    },{
-                    "x": 18, "y": 152
-                    },];
+                    },{ "x": 273, "y": 97
+                    },{"x": 249, "y": 91
+                    },{ "x": 210, "y": 92
+                    },{ "x": 221, "y": 125
+                    },{ "x": 234, "y": 140
+                    },  {  "x": 239, "y": 140
+                    }, {   "x": 243, "y": 149
+                    },{  "x": 202, "y": 149
+                    },{  "x": 179, "y": 122
+                    },{ "x": 174, "y": 140
+                    },{   "x": 185, "y": 142
+                    },{   "x": 190, "y": 151   }, {
+                    "x": 148, "y": 151 },{
+                    "x": 140, "y": 132    },{
+                    "x": 140, "y": 109 },{
+                    "x": 123, "y": 108 },{
+                    "x": 112, "y": 134  },{
+                    "x": 124, "y": 138  },{
+                    "x": 129, "y": 145 },{
+                    "x": 78, "y": 146 },{
+                    "x": 82, "y": 114   },{
+                    "x":50, "y": 131 },{
+                    "x": 46, "y": 138 },{
+                    "x": 59, "y": 146 },{
+                    "x": 55, "y": 153  },{
+                    "x": 18, "y": 152  },];
     
                     var lineSmooth = d3.svg.line().x(function(d) {
                             return d.x;
@@ -590,11 +593,202 @@ function addcloud(time){
 
       key.append("g").attr("class", "y axis").attr("transform", "translate(450,30)").call(yAxis).append("text").attr("transform", "rotate(-90)").attr("y", 34).attr("dy", ".71em").style("text-anchor", "end").text("CO2 Concentration (%)");
 </script>
+     
+
+<div id="seabargraph" style="width:50%; float:right">
+   
+<script>
+    var seamargin = {top: 20, right: 20, bottom: 70, left: 40},
+    seawidth = 600 - seamargin.left - seamargin.right,
+    seaheight = 300 - seamargin.top - seamargin.bottom;
+//sea level
+var seax = d3.scale.ordinal().rangeRoundBands([0, seawidth], .05);
+
+var seay = d3.scale.linear().domain([4,10]).range([seaheight, 0]);
+
+var seaxAxis = d3.svg.axis()
+    .scale(seax)
+    .orient("bottom").ticks(15);
+   // .tickFormat(d3.time.format("%Y-%m"));
+
+var seayAxis = d3.svg.axis()
+    .scale(seay)
+    .orient("left")
+    .ticks(10);
+
+var svg = d3.select("#seabargraph").append("svg")
+    .attr("width", seawidth + seamargin.left + seamargin.right)
+    .attr("height", seaheight + seamargin.top + seamargin.bottom)
+    .append("g")
+    .attr("transform", 
+          "translate(" + seamargin.left + "," + seamargin.top + ")");
     
+ 
+svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + seaheight + ")")
+      .call(seaxAxis)
+    .selectAll("text")
+      .style("text-anchor", "end")
+      .attr("dx", "-.8em")
+      .attr("dy", "-.55em")
+      .attr("transform", "rotate(-90)" );
 
-
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(seayAxis)
+    .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Sea Level");
+    
+   
+</script>
 </div>
-<p>
+     
+<div id="co2bargraph" style="width:50%; float:right">
+<script>
+//co2
+  var co2margin = {top: 20, right: 20, bottom: 70, left: 40},
+    co2width = 600 - co2margin.left - co2margin.right,
+    co2height = 300 - co2margin.top - co2margin.bottom;
+var co2x = d3.scale.ordinal().rangeRoundBands([0, co2width], .05);
+
+var co2y = d3.scale.linear().domain([300,400]).range([co2height, 0]);
+
+var co2xAxis = d3.svg.axis()
+    .scale(co2x)
+    .orient("bottom").ticks(15);
+   // .tickFormat(d3.time.format("%Y-%m"));
+
+var co2yAxis= d3.svg.axis()
+    .scale(co2y)
+    .orient("left")
+    .ticks(10);
+    
+var svg1 = d3.select("#co2bargraph").append("svg")
+    .attr("width", co2width + co2margin.left + co2margin.right)
+    .attr("height", co2height + co2margin.top + co2margin.bottom)
+    .append("g")
+    .attr("transform", 
+          "translate(" + co2margin.left + "," + co2margin.top + ")");
+
+svg1.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + co2height + ")")
+      .call(co2xAxis)
+    .selectAll("text")
+      .style("text-anchor", "end")
+      .attr("dx", "-.8em")
+      .attr("dy", "-.55em")
+      .attr("transform", "rotate(-90)" );
+
+  svg1.append("g")
+      .attr("class", "y axis")
+      .call(co2yAxis)
+    .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("CO2 Level");
+    
+    
+    function changeco2color(d){
+         var cloudcolor = d3.scale.linear().domain(d3.extent(co2bubble, function (point) 
+        {
+         return point.y;
+        }))
+        .range(["white", "grey"]);
+
+         var attrcolor=cloudcolor(d);
+         return attrcolor;
+    }
+</script>
+</div>
+     
+<div id="seaicebargraph" >
+<script>
+//sea ice    
+var icemargin = {top: 20, right: 20, bottom: 70, left: 40},
+    icewidth = 600 - icemargin.left - icemargin.right,
+    iceheight = 300 - icemargin.top - icemargin.bottom;
+var icex = d3.scale.ordinal().rangeRoundBands([0, icewidth], .05);
+
+var icey = d3.scale.linear().domain([1,10]).range([iceheight, 0]);
+
+var icexAxis = d3.svg.axis()
+    .scale(icex)
+    .orient("bottom").ticks(15);
+   // .tickFormat(d3.time.format("%Y-%m"));
+
+var iceyAxis = d3.svg.axis()
+    .scale(icey)
+    .orient("left")
+    .ticks(10);
+    
+var svg2 = d3.select("#seaicebargraph").append("svg")
+    .attr("width", icewidth + icemargin.left + icemargin.right)
+    .attr("height", iceheight + icemargin.top + icemargin.bottom)
+    .append("g")
+    .attr("transform", 
+          "translate(" + icemargin.left + "," + icemargin.top + ")");
+    
+svg2.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + iceheight + ")")
+      .call(icexAxis)
+    .selectAll("text")
+      .style("text-anchor", "end")
+      .attr("dx", "-.8em")
+      .attr("dy", "-.55em")
+      .attr("transform", "rotate(-90)" );
+
+svg2.append("g")
+      .attr("class", "y axis")
+      .call(iceyAxis)
+    .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Sea Ice Level");
+    
+    
+ function mouseover(d){
+       // console.log(d);
+        var transX = seax(d.x);
+        var transY;
+        var selector="#"+d.id;
+        d3.select(selector).classed("selectedBar",true);
+        
+        if(d.indicator==="svg"){
+            infoBoard = svg.append("g").attr("transform","translate(-100,-100)");
+            transY = seay(d.y);
+        }else if(d.indicator==="svg1"){
+            infoBoard = svg1.append("g").attr("transform","translate(-100,-100)");
+            transY = co2y(d.value);
+        }else if(d.indicator === "svg2"){
+            infoBoard = svg2.append("g").attr("transform","translate(-100,-100)");
+            transY =  icey(d.value);
+        }
+        infoBoard.append("rect").attr("width", 100).attr("height",50).attr("fill","grey").attr("opacity",0.5).attr("transform","translate(-10,-70)");
+        infoBoard.append("text").attr("id","yearLabel").attr("transform","translate(-10,-50)");
+        infoBoard.append("text").attr("id","valueLabel").attr("transform","translate(-10,-30)");
+        infoBoard.attr("transform","translate("+transX+","+transY+")");
+        infoBoard.select("text#yearLabel").text("year: "+d.x);
+        infoBoard.select("text#valueLabel").text("value: "+parseFloat(d.y).toFixed(2));
+    }
+    function mouseout(d){
+        var selector = "#"+d.id;
+        infoBoard.attr("transform","translate(-100,-100)");
+        d3.select(selector).classed("selectedBar",false);
+    }
+    </script>    
+</div>
+
     
     
     
