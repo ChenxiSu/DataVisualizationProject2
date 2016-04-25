@@ -187,7 +187,7 @@ var px =  ((myRange.valueAsNumber - parseInt(myRange.min)) * off) - (myValue.off
 
     
  
- <div id="polarbear" style="width: 1200px; margin: 0 auto; background: #black; color: #pink;">
+<div id="polarbear" style="width: 1200px; margin: 0 auto; background: #black; color: #pink;">
 
 <script> 
 
@@ -205,7 +205,7 @@ var svgContainer = d3.select("#polarbear").append("svg")
 //initail state must be the level at start year
 var rectangle = svgContainer.append("rect")
                              .attr("x", 0)
-                             .attr("y", 450)//need to change to yscale
+                             .attr("y", 450)
                              .attr("width", 500)
                              .attr("height", 500)
                              .attr("fill", "#6BA9FC")    
@@ -317,7 +317,7 @@ d3.csv("sealevelyear.csv", function (error, data) {
 		 	     y:Number(sea["CSIRO - Adjusted sea level (inches)"]) 
                };
 	})
-    
+    //have the x domain for sealevel bar graph
     seax.domain(sealine.map(function(d) { 
         return d.x; }));
     })
@@ -331,30 +331,11 @@ d3.csv("co2year.csv", function (error, data) {
 		 	     y:Number(co2["Mean"]) 
                };
 	})
-	
+   //have the x domain for co2level bar graph
    co2x.domain(co2bubble.map(function(d) { 
     return d.x; }));
-    
-    
 })
-function drawco2(number){
-    
-    var co2location=[{x:10,y:20},{x:15,y:20},{x:18,y:30}];
-    circles = svg.selectAll(".point").data(co2location);
-	// Create a mouseover callback that lists country names
-	circles.enter().append("circle")
-	.attr("class", "point")
-	.attr("cx", function(d) { return d.x; })
-	.attr("cy", function(d) { return d.y; })
-	.attr("r", 3)
-	.style("fill", drawcolor(number) ? "red" : "black")//false: black
-	.style("opacity", 0.5)
-	.on("mouseover", function (d) {
-		d3.select("#location").text(d.label);
-	});    
-}
-    
-    
+
 d3.csv("N_09_area.csv", function (error, data) {
     
   extent = data;
@@ -364,24 +345,14 @@ d3.csv("N_09_area.csv", function (error, data) {
            x:Number(area["extent"]) 
                };
   })
+//have the x domain for seaice bar graph
  icex.domain(glacierline.map(function(d) { 
     return d.y; }));
-    
-    console.log(glacierline);
-    
-
-    
 })
-function drawcolor(number){
-        
-        return false;
-}
-    
-    
+
+//the function for changing bar graph and polar bear graph    
 function update(time){
-//sea level
-  
-	
+    //sclae for sealine in polarbear graph
     yScale = d3.scale.linear().domain(d3.extent(sealine, function (point) {
 		 //   console.log(point.y);
             return point.y;
@@ -389,25 +360,18 @@ function update(time){
    
     var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(20);
     
-  //  svg.append("g")
-    //.attr("class", "axis")
-    //.attr("transform", "translate(40,0)")
-    //.call(yAxis);
     var attrY=yScale(sealine[(time)].y);
   
     rectangle.attr("transform", "translate(0," + (attrY-450) + ")")
     wave.attr("transform", "translate(" + (-time*2)+ "," + (attrY-48) + ")")
   
+    //scale for seaice in polarbear graph
     xScale = d3.scale.linear().domain([1,d3.max(glacierline, function (point) {
            return point.x;
         })]).range([0, width]);
   
    
     var xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(15);
-    
- 
-    
-    
     
     var attrX=xScale(glacierline[time].x);
   
@@ -416,15 +380,15 @@ function update(time){
     
     polarb.attr("transform", "translate(0," + (attrY-140) + ") scale(0.5,.5)")
     
-       //sea level bar graph
+   //adding bars to sea level bar graph
      var seadata=[];
     for(i=0;i<time;i++){
         seadata.push(sealine[i]);
     }
     
-    d3.selectAll(".barrect").remove();
- //   $("seabargraph").remove();//rect 也包括左边图的
-     var searect=svg.selectAll("rect")
+     d3.selectAll(".barrect").remove();//remove the bars each time slider changes
+      
+   svg.selectAll("rect")
       .data(seadata)//function sealine until now
       .enter()
       .append("rect")
@@ -438,6 +402,7 @@ function update(time){
       .attr("id",function(d, i ){d.indicator="svg"; d.id = "svg"+i; return d.id;})
 //     .on("mouseover",mouseover).on("mouseout",mouseout);
     
+       //adding bars to co2 ice bar graph
        var co2data=[];
        for(i=0;i<time;i++){
          co2data.push(co2bubble[i]);
@@ -460,11 +425,11 @@ function update(time){
  //   .on("mouseover", mouseover).on("mouseout",mouseout);
       
       
+    //adding bars to sea ice bar graph
     var seaicedata=[];
     for(i=0;i<time;i++){
         seaicedata.push(glacierline[i]);
-    }
-      
+    }     
       svg2.selectAll("rect")
       .data(seaicedata)//function sealine until now
       .enter()
@@ -477,13 +442,13 @@ function update(time){
       .attr("y", function(d) { 
       return icey(d.x); })
       .attr("height", function(d) { return iceheight - icey(d.x); })
-.attr("id",function(d,i){d.indicator="svg2"; d.id="svg2"+i; return d.id;})
+      .attr("id",function(d,i){d.indicator="svg2"; d.id="svg2"+i; return d.id;})
 //.on("mouseover",mouseover).on("mouseout",mouseout);
 
     
 }
     
-    
+//function of changing co2 color based on its value
 function addcloud(time){
    var cloudcolor = d3.scale.linear()
     .domain(d3.extent(co2bubble, function (point) 
@@ -491,6 +456,7 @@ function addcloud(time){
          return point.y;
         }))
     .range(["lightgrey", "grey"]);
+  
   var attrcolor=cloudcolor(co2bubble[time].y);
     
   cloudC.style("fill", attrcolor )
@@ -567,7 +533,7 @@ function addcloud(time){
                             return d.y;
                         });
                      
-                     //Adds a path with lineFunction and draws out the milk bottle svg element
+    //Adds a path with lineFunction and draws out the milk bottle svg element
      polarb= svgContainer.append("path")
                             .attr("d", lineSmooth(polarbear))
                             .attr("stroke", "#1E1E1E")
@@ -601,7 +567,8 @@ function addcloud(time){
     var seamargin = {top: 20, right: 20, bottom: 70, left: 40},
     seawidth = 600 - seamargin.left - seamargin.right,
     seaheight = 300 - seamargin.top - seamargin.bottom;
-//sea level
+
+//this is the bar graph of sea level
 var seax = d3.scale.ordinal().rangeRoundBands([0, seawidth], .05);
 
 var seay = d3.scale.linear().domain([4,10]).range([seaheight, 0]);
@@ -609,13 +576,12 @@ var seay = d3.scale.linear().domain([4,10]).range([seaheight, 0]);
 var seaxAxis = d3.svg.axis()
     .scale(seax)
     .orient("bottom").ticks(15);
-   // .tickFormat(d3.time.format("%Y-%m"));
-
+ 
 var seayAxis = d3.svg.axis()
     .scale(seay)
     .orient("left")
     .ticks(10);
-
+//add new svg for sea level
 var svg = d3.select("#seabargraph").append("svg")
     .attr("width", seawidth + seamargin.left + seamargin.right)
     .attr("height", seaheight + seamargin.top + seamargin.bottom)
@@ -623,7 +589,6 @@ var svg = d3.select("#seabargraph").append("svg")
     .attr("transform", 
           "translate(" + seamargin.left + "," + seamargin.top + ")");
     
- 
 svg.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + seaheight + ")")
@@ -634,7 +599,7 @@ svg.append("g")
       .attr("dy", "-.55em")
       .attr("transform", "rotate(-90)" );
 
-  svg.append("g")
+svg.append("g")
       .attr("class", "y axis")
       .call(seayAxis)
     .append("text")
@@ -650,10 +615,11 @@ svg.append("g")
      
 <div id="co2bargraph" style="width:50%; float:right">
 <script>
-//co2
+//this is the bar graph of co2
   var co2margin = {top: 20, right: 20, bottom: 70, left: 40},
     co2width = 600 - co2margin.left - co2margin.right,
     co2height = 300 - co2margin.top - co2margin.bottom;
+//add x and y scale for years and values
 var co2x = d3.scale.ordinal().rangeRoundBands([0, co2width], .05);
 
 var co2y = d3.scale.linear().domain([300,400]).range([co2height, 0]);
@@ -661,13 +627,12 @@ var co2y = d3.scale.linear().domain([300,400]).range([co2height, 0]);
 var co2xAxis = d3.svg.axis()
     .scale(co2x)
     .orient("bottom").ticks(15);
-   // .tickFormat(d3.time.format("%Y-%m"));
 
 var co2yAxis= d3.svg.axis()
     .scale(co2y)
     .orient("left")
     .ticks(10);
-    
+//new svg for co2 bar graph    
 var svg1 = d3.select("#co2bargraph").append("svg")
     .attr("width", co2width + co2margin.left + co2margin.right)
     .attr("height", co2height + co2margin.top + co2margin.bottom)
@@ -685,7 +650,7 @@ svg1.append("g")
       .attr("dy", "-.55em")
       .attr("transform", "rotate(-90)" );
 
-  svg1.append("g")
+svg1.append("g")
       .attr("class", "y axis")
       .call(co2yAxis)
     .append("text")
@@ -694,8 +659,8 @@ svg1.append("g")
       .attr("dy", ".71em")
       .style("text-anchor", "end")
       .text("CO2 Level");
-    
-    
+   
+//use color scale to change the color of co2 based on co2 level
     function changeco2color(d){
          var cloudcolor = d3.scale.linear().domain(d3.extent(co2bubble, function (point) 
         {
@@ -708,13 +673,17 @@ svg1.append("g")
     }
 </script>
 </div>
+
      
+
 <div id="seaicebargraph" >
 <script>
-//sea ice    
+//this is the bar graph for sea ice    
 var icemargin = {top: 20, right: 20, bottom: 70, left: 40},
     icewidth = 600 - icemargin.left - icemargin.right,
     iceheight = 300 - icemargin.top - icemargin.bottom;
+
+//new scale for year and value
 var icex = d3.scale.ordinal().rangeRoundBands([0, icewidth], .05);
 
 var icey = d3.scale.linear().domain([1,10]).range([iceheight, 0]);
@@ -722,20 +691,19 @@ var icey = d3.scale.linear().domain([1,10]).range([iceheight, 0]);
 var icexAxis = d3.svg.axis()
     .scale(icex)
     .orient("bottom").ticks(15);
-   // .tickFormat(d3.time.format("%Y-%m"));
 
 var iceyAxis = d3.svg.axis()
     .scale(icey)
     .orient("left")
     .ticks(10);
-    
+//add new svg     
 var svg2 = d3.select("#seaicebargraph").append("svg")
     .attr("width", icewidth + icemargin.left + icemargin.right)
     .attr("height", iceheight + icemargin.top + icemargin.bottom)
     .append("g")
     .attr("transform", 
           "translate(" + icemargin.left + "," + icemargin.top + ")");
-    
+//xaxis format    
 svg2.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + iceheight + ")")
@@ -746,6 +714,7 @@ svg2.append("g")
       .attr("dy", "-.55em")
       .attr("transform", "rotate(-90)" );
 
+//yaxis format
 svg2.append("g")
       .attr("class", "y axis")
       .call(iceyAxis)
@@ -755,15 +724,16 @@ svg2.append("g")
       .attr("dy", ".71em")
       .style("text-anchor", "end")
       .text("Sea Ice Level");
-    
-    
+
+//show year and value when mouse move to the bar
+//not adding the mouseover function yet    
  function mouseover(d){
-       // console.log(d);
         var transX = seax(d.x);
         var transY;
         var selector="#"+d.id;
         d3.select(selector).classed("selectedBar",true);
         
+        //judge which svg move into
         if(d.indicator==="svg"){
             infoBoard = svg.append("g").attr("transform","translate(-100,-100)");
             transY = seay(d.y);
@@ -774,6 +744,7 @@ svg2.append("g")
             infoBoard = svg2.append("g").attr("transform","translate(-100,-100)");
             transY =  icey(d.value);
         }
+        //show rect with text in it.
         infoBoard.append("rect").attr("width", 100).attr("height",50).attr("fill","grey").attr("opacity",0.5).attr("transform","translate(-10,-70)");
         infoBoard.append("text").attr("id","yearLabel").attr("transform","translate(-10,-50)");
         infoBoard.append("text").attr("id","valueLabel").attr("transform","translate(-10,-30)");
@@ -781,6 +752,7 @@ svg2.append("g")
         infoBoard.select("text#yearLabel").text("year: "+d.x);
         infoBoard.select("text#valueLabel").text("value: "+parseFloat(d.y).toFixed(2));
     }
+    
     function mouseout(d){
         var selector = "#"+d.id;
         infoBoard.attr("transform","translate(-100,-100)");
