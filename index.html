@@ -246,9 +246,25 @@ var lineFunction2 = d3.svg.line()
     
 var sealine=[];
 var svg = d3.select("svg");
-    
+
+  var co2margin = {top: 20, right: 20, bottom: 70, left: 40},
+    co2width = 600 - co2margin.left - co2margin.right,
+    co2height = 300 - co2margin.top - co2margin.bottom;
+//add x and y scale for years and values
+var co2x = d3.scale.ordinal().rangeRoundBands([0, co2width], .05);
+
+var co2y = d3.scale.linear().domain([300,400]).range([co2height, 0]);
+
+    var seamargin = {top: 20, right: 20, bottom: 70, left: 40},
+    seawidth = 600 - seamargin.left - seamargin.right,
+    seaheight = 300 - seamargin.top - seamargin.bottom;
+
+//this is the bar graph of sea level
+var seax = d3.scale.ordinal().rangeRoundBands([0, seawidth], .05);
+
+var seay = d3.scale.linear().domain([4,10]).range([seaheight, 0]);
 var infoBoard;
-    
+
 d3.csv("sealevelyear.csv", function (error, data) {
     
     sealevel = data;
@@ -505,14 +521,6 @@ function addcloud(time){
 <div id="seabargraph" style="width:50%; float:right">
    
 <script>
-    var seamargin = {top: 20, right: 20, bottom: 70, left: 40},
-    seawidth = 600 - seamargin.left - seamargin.right,
-    seaheight = 300 - seamargin.top - seamargin.bottom;
-
-//this is the bar graph of sea level
-var seax = d3.scale.ordinal().rangeRoundBands([0, seawidth], .05);
-
-var seay = d3.scale.linear().domain([4,10]).range([seaheight, 0]);
 
 var seaxAxis = d3.svg.axis()
     .scale(seax)
@@ -556,14 +564,6 @@ svg.append("g")
      
 <div id="co2bargraph" style="width:50%; float:right">
 <script>
-//this is the bar graph of co2
-  var co2margin = {top: 20, right: 20, bottom: 70, left: 40},
-    co2width = 600 - co2margin.left - co2margin.right,
-    co2height = 300 - co2margin.top - co2margin.bottom;
-//add x and y scale for years and values
-var co2x = d3.scale.ordinal().rangeRoundBands([0, co2width], .05);
-
-var co2y = d3.scale.linear().domain([300,400]).range([co2height, 0]);
 
 var co2xAxis = d3.svg.axis()
     .scale(co2x)
