@@ -265,6 +265,15 @@ var seax = d3.scale.ordinal().rangeRoundBands([0, seawidth], .05);
 var seay = d3.scale.linear().domain([4,10]).range([seaheight, 0]);
 var infoBoard;
 
+var icemargin = {top: 20, right: 20, bottom: 70, left: 40},
+    icewidth = 600 - icemargin.left - icemargin.right,
+    iceheight = 300 - icemargin.top - icemargin.bottom;
+
+//new scale for year and value
+var icex = d3.scale.ordinal().rangeRoundBands([0, icewidth], .05);
+
+var icey = d3.scale.linear().domain([1,10]).range([iceheight, 0]);
+
 d3.csv("sealevelyear.csv", function (error, data) {
     
     sealevel = data;
@@ -339,7 +348,7 @@ function update(time){
     
    //adding bars to sea level bar graph
      var seadata=[];
-    for(i=0;i<time;i++){
+    for(i=0;i<=time;i++){
         seadata.push(sealine[i]);
     }
     
@@ -361,7 +370,7 @@ function update(time){
     
        //adding bars to co2 ice bar graph
        var co2data=[];
-       for(i=0;i<time;i++){
+       for(i=0;i<=time;i++){
          co2data.push(co2bubble[i]);
       }
       svg1.selectAll("rect")
@@ -384,7 +393,7 @@ function update(time){
       
     //adding bars to sea ice bar graph
     var seaicedata=[];
-    for(i=0;i<time;i++){
+    for(i=0;i<=time;i++){
         seaicedata.push(glacierline[i]);
     }     
       svg2.selectAll("rect")
@@ -620,14 +629,6 @@ svg1.append("g")
 <div id="seaicebargraph" >
 <script>
 //this is the bar graph for sea ice    
-var icemargin = {top: 20, right: 20, bottom: 70, left: 40},
-    icewidth = 600 - icemargin.left - icemargin.right,
-    iceheight = 300 - icemargin.top - icemargin.bottom;
-
-//new scale for year and value
-var icex = d3.scale.ordinal().rangeRoundBands([0, icewidth], .05);
-
-var icey = d3.scale.linear().domain([1,10]).range([iceheight, 0]);
 
 var icexAxis = d3.svg.axis()
     .scale(icex)
