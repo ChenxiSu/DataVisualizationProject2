@@ -1,0 +1,86 @@
+path.outline { fill: none; stroke-width: 2.5;}
+path.plot { fill: none; stroke-width: 3; }
+path.fade{ fill : none ; stroke-width:1 ;stroke:grey; opacity: 0.2;}
+
+.voronoi path 
+{
+  fill: none;
+  pointer-events: all;
+}
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+/* Creates a small triangle extender for the tooltip */
+  .d3-tip:after {
+    box-sizing: border-box;
+    display: inline;
+    font-size: 10px;
+    width: 100%;
+    line-height: 1;
+    color: rgba(0, 0, 0, 0.8);
+    content: "\25BC";
+    position: absolute;
+    text-align: center;
+  }
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+        
+.axis text {
+    font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 11px;
+}
+        
+.circle {
+    stroke: grey;
+    stroke-width: 0;
+    fill: #444;
+}
+.dot{
+  opacity:1.25;
+}
+h1{
+  font-size:57px !important;
+}
+p {
+    font-size: 18px;
+}
+
+button { padding: 5px; }
+
+a {
+  color: #4FDEF2;
+}
+input[type='range']{
+  width:480;
+  -webkit-appearance: none;
+  background-color: #012C5F;
+  opacity:.8;
+  height:20px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background-color: #9D9D9D;
+    opacity:.8;
+    width: 10px;
+    height: 26px;
+}
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none;
+}
+.selectedBar{
+  fill: antiquewhite !important;
+}
