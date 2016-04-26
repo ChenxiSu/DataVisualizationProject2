@@ -10,11 +10,96 @@
     
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="css/style.css">
     <script src="js/bootstrap.min.js"></script>
+ <style>
+  path.outline { fill: none; stroke-width: 2.5;}
+      path.plot { fill: none; stroke-width: 3; }
+      path.fade{ fill : none ; stroke-width:1 ;stroke:grey; opacity: 0.2;}
+      .voronoi path {
+        fill: none;
+        pointer-events: all;
+      }
+      .d3-tip {
+        line-height: 1;
+        font-weight: bold;
+        padding: 12px;
+        background: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        border-radius: 2px;
+      }
+      /* Creates a small triangle extender for the tooltip */
+      .d3-tip:after {
+        box-sizing: border-box;
+        display: inline;
+        font-size: 10px;
+        width: 100%;
+        line-height: 1;
+        color: rgba(0, 0, 0, 0.8);
+        content: "\25BC";
+        position: absolute;
+        text-align: center;
+      }
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: #000;
+            shape-rendering: crispEdges;
+        }
+        
+        .axis text {
+            font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+            font-size: 11px;
+        }
+        
+        .circle {
+            stroke: grey;
+            stroke-width: 0;
+            fill: #444;
+        }
+        .dot{
+          opacity:1.25;
+        }
+        h1{
+          font-size:57px !important;
+        }
+        p {
+            font-size: 18px;
+        }
+button { padding: 5px; }
+
+a {
+  color: #4FDEF2;
+}
+input[type='range']{
+  width:480;
+  -webkit-appearance: none;
+    background-color: #012C5F;
+    opacity:.8;
+    height:20px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+     -webkit-appearance: none;
+    background-color: #9D9D9D;
+    opacity:.8;
+    width: 10px;
+    height: 26px;
+}
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+.selectedBar{
+  fill: antiquewhite !important;
+}
+
+    </style>
 </head>
 
 <body>
+
     <nav class="navbar navbar-inverse navbar-fixed-top" style="background-color:#012C5F !important; background-image:none;">
         <div class="container" >
             <div class="navbar-header">
@@ -39,46 +124,51 @@
         </div>
     </div>
     <div class="container">
-        
-        <div class="row">
+           <div class="row">
             <div class="col-md-12">
-                <h3>A Closer Look into the Effects of Higher Temperatures</h3>
-                <p>An rise in worldwide temperatures leads to an increase in carbon dioxide in the atmosphere, higher sea levels, and a decrease in sea ice extent. Drag the slider to watch how the polar bear copes as sea level rises, CO2 concentration increases, and sea ice shrinks.The impacts of a dwindling ice cover in the Arctic are far-reaching, from species endangerment to enhanced global warming, to the weakening or shut-down of global ocean circulation.</p>
-                <blockquote>"Taken as a whole, the range of published evidence indicates that the net damage costs of climate change are likely to be significant and to increase over time."-Intergovernmental Panel on Climate Change</blockquote>
+                <h3>Overview of Factors Contributing to Global Warming</h3>
+                <p>Skeptics of manmade climate changes offer various natural causes to explain why the Earth has warmed 1.4 degrees Fahrenheit since 1880. But, can these account for the planet's rising temperatures? Hover over the graph to see how much different natural factors like orbital changes, solar, and volcanic and human factors like ozone and CO2 contribute to global warming.</p>
+                <blockquote>"Putting the possible natural and human causes of climate change alongside one another makes the dominant role of greenhouse gases even more plainly visible. The only real question is: What are we going to do about it?" -NASA-GISS</blockquote>
                 
                 <div id="causes">
                     <script src="js/visualization1.js">
                     </script>
                 </div>
             </div>
-        </div>
+      </div>
 
         <div class="row">
             <div class="col-md-12">
                 <h3>A Closer Look into the Effects of Higher Temperatures</h3>
-                <p>An rise in worldwide temperatures leads to an increase in carbon dioxide in the atmosphere, higher sea levels, and a decrease in sea ice extent. Drag the slider to watch how the polar bear copes as sea level rises, CO2 concentration increases, and sea ice shrinks.The impacts of a dwindling ice cover in the Arctic are far-reaching, from species endangerment to enhanced global warming, to the weakening or shut-down of global ocean circulation.</p>
-                <blockquote>"Taken as a whole, the range of published evidence indicates that the net damage costs of climate change are likely to be significant and to increase over time."-Intergovernmental Panel on Climate Change</blockquote>
+                <p>A rise in worldwide temperatures leads to an increase in carbon dioxide in the atmosphere, higher sea levels, and a decrease in sea ice extent. Drag the slider to watch how the polar bear copes as sea level rises, CO2 concentration increases, and sea ice shrinks.The impacts of a dwindling ice cover in the Arctic are far-reaching, from species endangerment to enhanced global warming, to the weakening or shut-down of global ocean circulation.</p>
+                <blockquote>"Taken as a whole, the range of published evidence indicates that the net damage costs of climate change are likely to be significant and to increase over time."-Intergovernmental Panel on Climate Change"</blockquote>
 
                 <div style="position:relative; margin-left:30px;width:90%">
-                    <span style="position:absolute; color:#1E6CA2; margin-left:40px; min-width:100px; max-width:300px;">
-                      <span id="myValue"></span>
-                    </span>
-                    <input type="range" id="myRange" min="0" max="26" value="0" step="1">
-                </div>
+                
+                  <span style="position:absolute; color:#1E6CA2; margin-left:40px; min-width:100px; max-width:300px;">
+                  <span id="myValue"></span>
+                  </span>
+                <input type="range" id="myRange" min="0" max="26" value="0" step="1">
 
-    
+</div>
+<div id="polarbear" style="width: 1100px; margin: 0 auto; background: #black; color: #pink;">
+
+<div style="float:right;margin-top:-20px">
+<p id="seabargraph" style="width:50%">
+</p>
+<p id="co2bargraph" style="width:50%;">
+
+</p>
+<p id="seaicebargraph" >
  
-                <div id="polarbear" style="width: 1100px; margin: 0 auto; background: #black; color: #pink;">     
+</p>
+<script src="js/visualization2.js"></script>
 
-                    <div id="seabargraph" style="width:50%; float:right;margin-top:-20px">
-     
-                    <p id="co2bargraph" style="width:50%;"></p>
-                    <p id="seaicebargraph" ></p>
-                    </div>
-                </div>
+</div>
+</div>
             </div>
         </div>
-    </div>
-    <script src="js/visualization2.js"></script>
+        </div>
 </body>
+
 </html>

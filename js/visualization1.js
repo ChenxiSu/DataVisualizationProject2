@@ -1,9 +1,9 @@
 // generate the svg and x/y axis
-var width = 1000;
+var width = 1150;
 var height = 680;
 var padding = 50;
 var svgLineGraph = d3.select("#causes").append("svg").attr("width", width)
-	.attr("height",height).style("background-color","lightgrey");
+	.attr("height",height);
 var xScaleLineGraph = d3.scale.linear().domain([1880, 2013]).range([2*padding, width-padding]);
 var yScaleLineGraph = d3.scale.linear().domain([-1,1]).range([height-padding, 2*padding]);
 
@@ -127,12 +127,12 @@ d3.csv("data/factors.csv", function (error, data){
 		return xScaleLineGraph(d.year);} ).y(function (d) { return yScaleLineGraph(d.val); });
 
 		// array of objects: name, array of values
-		var factors = [{"name":"Green House Gas", "values":greenHouseGasValues,"color":"green", "lineID":"greenHouseGas"},
-		{"name":"Orbital Changes","values":Orbital_changesValues,"color":"white", "lineID":"orbitalChanges"},
-		{"name":"Ozone","values":OzoneValues,"color":"blue","lineID":"Ozone"},
-		{"name":"Solar", "values":SolarValues,"color":"red","lineID":"Solar"},
-		{"name":"Volcanic","values":VolcanicValues,"color":"black","lineID":"Volcanic"}, 
-		{"name":"Temprature ","values":tempratureYearlyValues, "color":"yellow","lineID":"Temprature"}];
+		var factors = [{"name":"Green House Gas", "values":greenHouseGasValues,"color":"#696969", "lineID":"greenHouseGas"},
+		{"name":"Orbital Changes","values":Orbital_changesValues,"color":"#ADD8E6", "lineID":"orbitalChanges"},
+		{"name":"Ozone","values":OzoneValues,"color":"#47A4CD","lineID":"Ozone"},
+		{"name":"Solar", "values":SolarValues,"color":"#012C5F","lineID":"Solar"},
+		{"name":"Volcanic","values":VolcanicValues,"color":"#43D2E7","lineID":"Volcanic"}, 
+		{"name":"Temprature ","values":tempratureYearlyValues, "color":"#F9E8A3","lineID":"Temprature"}];
 
 		//generate path
 		svgLineGraph.append("g").selectAll("path .outline line").data(factors)

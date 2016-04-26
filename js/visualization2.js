@@ -40,7 +40,7 @@ var rectangle = svgContainer.append("rect")
     .attr("y", 450)
     .attr("width", 500)
     .attr("height", 500)
-    .attr("fill", "#82CDD3");  
+    .attr("fill", "#47A4CD");  
 
 var lineData = [{ "x": 0,   "y": 50},  { "x": 100,  "y": 0},
                     { "x": 180,  "y": 50}, { "x": 300,   "y": 0},
@@ -54,8 +54,8 @@ var lineFunction = d3.svg.line()
   
 var wave=svgContainer.append("path")
     .attr("d", lineFunction(lineData))
-    .attr("transform", "translate(0,400)")
-    .attr("fill", "#82CDD3");
+    .attr("transform", "translate(0,405)")
+    .attr("fill", "#47A4CD");
     
 //initail state must be the level at start year
 var rectangle1 = svgContainer.append("rect")
@@ -63,7 +63,7 @@ var rectangle1 = svgContainer.append("rect")
     .attr("y", 400)//need to change to yscale
     .attr("width", 450)
     .attr("height", 80)
-    .attr("fill", "#BEEBFA");
+    .attr("fill", "#ebf9fd");
 
 var icelineData = [{ "x": 0,   "y": 50},  { "x": 100,  "y": 50},
                 { "x": 180,  "y": 50}, { "x": 300,   "y": 30},
@@ -77,7 +77,7 @@ var lineFunction3 = d3.svg.line()
 var icewave=svgContainer.append("path")
     .attr("d", lineFunction3(icelineData))
     .attr("transform", "translate(-50,350)")
-    .attr("fill", "#BEEBFA");
+    .attr("fill", "#ebf9fd");
 
 var glacierline=[];    
     
@@ -487,28 +487,6 @@ svg.append("g")
     .style("text-anchor", "end")
     .text("Cumulative Sea Level Change (in)");
 
-    var w = 20, h = 245;
-
-    var key = d3.select("#seabargraph svg").append("g").attr("width", w).attr("height", h).attr("transform","translate(470,0)");
-
-    var legend = key.append("defs").append("svg:linearGradient").attr("id", "gradient1").attr("x1", "100%").attr("y1", "0%").attr("x2", "100%").attr("y2", "100%").attr("spreadMethod", "pad");
-
-    legend.append("stop").attr("offset", "0%").attr("stop-color", "#1E6CA2").attr("stop-opacity", 1);
-
-    legend.append("stop").attr("offset", "100%").attr("stop-color", "#82CDD3").attr("stop-opacity", 1);
-
-    key.append("rect").attr("width", w).attr("height", h - 100).style("fill", "url(#gradient1)").attr("transform", "translate(20,10)");
-
-    var y = d3.scale.linear().range([145, 0]).domain([0, 100]);
-
-    var yAxis2 = d3.svg.axis().scale(y).orient("right").ticks(5);
-
-    key.append("g").attr("class", "y axis").attr("transform", "translate(41,10)").call(yAxis2).append("text").attr("transform", "rotate(-90)").attr("y", 30).attr("dy", ".71em").style("text-anchor", "end").text("Change in Sea Level (%) ");
-
-
-
-
-
 
 
 
@@ -549,31 +527,13 @@ svg1.append("g")
     .style("text-anchor", "end")
     .text("CO\u2082 Level (parts per million)");
    
-var w = 20, h = 245;
-
-var key = d3.select("#co2bargraph svg").append("g").attr("width", w).attr("height", h).attr("transform","translate(470,0)");
-
-var legend = key.append("defs").append("svg:linearGradient").attr("id", "gradient2").attr("x1", "100%").attr("y1", "0%").attr("x2", "100%").attr("y2", "100%").attr("spreadMethod", "pad");
-
-legend.append("stop").attr("offset", "0%").attr("stop-color", "gray").attr("stop-opacity", 1);
-
-legend.append("stop").attr("offset", "100%").attr("stop-color", "#f2f2f2").attr("stop-opacity", 1);
-
-key.append("rect").attr("width", w).attr("height", h - 100).style("fill", "url(#gradient2)").attr("transform", "translate(20,10)");
-
-var y = d3.scale.linear().range([145, 0]).domain([0, 100]);
-
-var yAxis2 = d3.svg.axis().scale(y).orient("right").ticks(5);
-
-key.append("g").attr("class", "y axis").attr("transform", "translate(41,10)").call(yAxis2).append("text").attr("transform", "rotate(-90)").attr("y", 30).attr("dy", ".71em").style("text-anchor", "end").text("CO\u2082  Concentration(%) ");
-
 //use color scale to change the color of co2 based on co2 level
 function changeco2color(d){
   var cloudcolor = d3.scale.linear()
       .domain(d3.extent(co2bubble, function (point){
           return point.y;
       }))
-      .range(["#f2f2f2", "grey"]);
+      .range(["#f2f2f2", "#696969"]);
 
   var attrcolor=cloudcolor(d);
   return attrcolor;
@@ -585,7 +545,7 @@ function changesealevelcolor(d){
       .domain(d3.extent(sealine, function (point){
         return point.y;
       }))
-      .range(["#82CDD3", "#1E6CA2"]);
+      .range(["#47A4CD", "#012C5F"]);
 
     var attrcolor=seacolor(d);
     return attrcolor;
@@ -596,7 +556,7 @@ function changeicecolor(d){
         .domain(d3.extent(glacierline, function (point){
            return point.x;
         }))
-        .range(["#ebf9fd", "#abd3e1"]);
+        .range(["#ebf9fd", "#9ED0E0"]);
     var attrcolor=icecolor(d);
     return attrcolor;
 }
@@ -649,27 +609,63 @@ svg2.append("g")
     .style("text-anchor", "end")
     .text("Sea Ice Extent Level (km\u00B2)");
 
- var w = 20, h = 245;
-
-    var key = d3.select("#seaicebargraph svg").append("g").attr("width", w).attr("height", h).attr("transform","translate(470,0)");
-
-    var legend = key.append("defs").append("svg:linearGradient").attr("id", "gradient3").attr("x1", "100%").attr("y1", "0%").attr("x2", "100%").attr("y2", "100%").attr("spreadMethod", "pad");
-
-    legend.append("stop").attr("offset", "0%").attr("stop-color", "#abd3e1").attr("stop-opacity", 1);
-
-    legend.append("stop").attr("offset", "100%").attr("stop-color", "#ebf9fd").attr("stop-opacity", 1);
-
-    key.append("rect").attr("width", w).attr("height", h - 100).style("fill", "url(#gradient3)").attr("transform", "translate(20,10)");
-
-    var y = d3.scale.linear().range([145, 0]).domain([0, 100]);
-
-    var yAxis2 = d3.svg.axis().scale(y).orient("right").ticks(5);
-
-    key.append("g").attr("class", "y axis").attr("transform", "translate(41,10)").call(yAxis2).append("text").attr("transform", "rotate(-90)").attr("y", 30).attr("dy", ".71em").style("text-anchor", "end").text("Change in Ice Extent Level (%) ");
-
 //show year and value when mouse move to the bar
 //not adding the mouseover function yet    
-function mouseover(d){
+
+var w = 20, h = 245;
+var seakey = d3.select("#seabargraph svg").append("g").attr("width", w).attr("height", h).attr("transform","translate(470,0)");
+
+    var sealegend = seakey.append("defs").append("svg:linearGradient").attr("id", "gradient1").attr("x1", "100%").attr("y1", "0%").attr("x2", "100%").attr("y2", "100%").attr("spreadMethod", "pad");
+
+    sealegend.append("stop").attr("offset", "0%").attr("stop-color", "#012C5F").attr("stop-opacity", 1);
+
+    sealegend.append("stop").attr("offset", "100%").attr("stop-color", "#47A4CD").attr("stop-opacity", 1);
+
+    seakey.append("rect").attr("width", w).attr("height", h - 100).style("fill", "url(#gradient1)").attr("transform", "translate(20,10)");
+
+    var sea_y = d3.scale.linear().range([145, 0]).domain([0, 100]);
+
+    var sea_yAxis2 = d3.svg.axis().scale(sea_y).orient("right").ticks(5);
+
+    seakey.append("g").attr("class", "y axis").attr("transform", "translate(41,10)").call(sea_yAxis2).append("text").attr("transform", "rotate(-90)").attr("y", 30).attr("dy", ".71em").style("text-anchor", "end").text("Change in Sea Level (%) ");
+
+
+
+var co2key = d3.select("#co2bargraph svg").append("g").attr("width", w).attr("height", h).attr("transform","translate(470,0)");
+
+var co2legend = co2key.append("defs").append("svg:linearGradient").attr("id", "gradient2").attr("x1", "100%").attr("y1", "0%").attr("x2", "100%").attr("y2", "100%").attr("spreadMethod", "pad");
+
+co2legend.append("stop").attr("offset", "0%").attr("stop-color", "#696969").attr("stop-opacity", 1);
+
+co2legend.append("stop").attr("offset", "100%").attr("stop-color", "#f2f2f2").attr("stop-opacity", 1);
+
+co2key.append("rect").attr("width", w).attr("height", h - 100).style("fill", "url(#gradient2)").attr("transform", "translate(20,10)");
+
+var co2_y = d3.scale.linear().range([145, 0]).domain([0, 100]);
+
+var co2_yAxis2 = d3.svg.axis().scale(co2_y).orient("right").ticks(5);
+
+co2key.append("g").attr("class", "y axis").attr("transform", "translate(41,10)").call(co2_yAxis2).append("text").attr("transform", "rotate(-90)").attr("y", 30).attr("dy", ".71em").style("text-anchor", "end").text("CO\u2082  Concentration(%) ");
+
+
+
+    var icekey = d3.select("#seaicebargraph svg").append("g").attr("width", w).attr("height", h).attr("transform","translate(470,0)");
+
+    var icelegend = icekey.append("defs").append("svg:linearGradient").attr("id", "gradient3").attr("x1", "100%").attr("y1", "0%").attr("x2", "100%").attr("y2", "100%").attr("spreadMethod", "pad");
+
+    icelegend.append("stop").attr("offset", "0%").attr("stop-color", "#9ED0E0").attr("stop-opacity", 1);
+
+    icelegend.append("stop").attr("offset", "100%").attr("stop-color", "#ebf9fd").attr("stop-opacity", 1);
+
+    icekey.append("rect").attr("width", w).attr("height", h - 100).style("fill", "url(#gradient3)").attr("transform", "translate(20,10)");
+
+    var ice_y = d3.scale.linear().range([145, 0]).domain([0, 100]);
+
+    var ice_yAxis2 = d3.svg.axis().scale(ice_y).orient("right").ticks(5);
+
+    icekey.append("g").attr("class", "y axis").attr("transform", "translate(41,10)").call(ice_yAxis2).append("text").attr("transform", "rotate(-90)").attr("y", 30).attr("dy", ".71em").style("text-anchor", "end").text("Change in Ice Extent Level (%) ");
+
+    function mouseover(d){
 
     var transX = seax(d.x);
     var transY;
@@ -692,12 +688,13 @@ function mouseover(d){
     }
 
     //show rect with text in it.
-    infoBoard.append("rect").attr("width", 100).attr("height",50).attr("fill","grey").attr("opacity",0.5).attr("transform","translate(-10,-70)");
-    infoBoard.append("text").attr("id","yearLabel").attr("transform","translate(-10,-50)");
-    infoBoard.append("text").attr("id","valueLabel").attr("transform","translate(-10,-30)");
+    infoBoard.append("rect").attr("width", 85).attr("height",40).attr("fill","#F4F5F9").attr("stroke","#012D60").attr("transform","translate(-10,-48)");
+    infoBoard.append("text").attr("id","yearLabel").attr("transform","translate(3,-30)").style("font-size","10px");
+    infoBoard.append("text").attr("id","valueLabel").attr("transform","translate(3,-20)").style("font-size","10px");
     infoBoard.attr("transform","translate("+transX+","+transY+")");
     infoBoard.select("text#yearLabel").text("year: "+d.x);
     infoBoard.select("text#valueLabel").text("value: "+parseFloat(d.y).toFixed(2));
+
 }
     
 function mouseout(d){
