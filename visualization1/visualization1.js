@@ -159,7 +159,9 @@ d3.csv("factors.csv", function (error, data){
         function mouseover(d) {
         	var id = "#"+d.line;
         	d3.selectAll("path.line").classed("fade",true);
+        	d3.select("#tempratureYearly").classed("fade",false);
 		    d3.select(id).classed("fade",false);
+
 		    focus.attr("transform", "translate(" + xScale(d.year) + "," + yScale(d.val) + ")");
 		    focus.select("text#yearLabel").text("year:"+d.year); 
 		    focus.select("text#valueLabel").text("value:"+d.val.toFixed(2));  
@@ -167,7 +169,7 @@ d3.csv("factors.csv", function (error, data){
 
 		function mouseout (d) {
 			var id = "#"+d.line;
-			d3.selectAll(id).classed("fade",true);
+			d3.select(id).classed("fade",true);
 			d3.selectAll("path.line").classed("fade",false);
 			focus.attr("transform", "translate(-100,-100)");
 		}

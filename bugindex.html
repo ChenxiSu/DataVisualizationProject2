@@ -103,7 +103,7 @@ button:focus {
     <span style="position:absolute; color:#1E6CA2; margin-left:40px; min-width:100px; max-width:300px;">
     <span id="myValue"></span>
     </span>
-  <input type="range" id="myRange" min="0" max="34" value="0" on onchange="updateTextInput(this.value)" step="1">
+  <input type="range" id="myRange" min="0" max="34" value="0" oninput="updateTextInput(this.value)" step="1">
 
 
 <script type="text/javascript" charset="utf-8">
@@ -329,8 +329,8 @@ function update(time){
     var attrY=yScale(sealine[(time)].y);
   
     
-     //adding bars to sea level bar graph
-     var seadata=[];
+    //adding bars to sea level bar graph
+    var seadata=[];
     for(i=0;i<=time;i++){
         seadata.push(sealine[i]);
       //  console.log(seadata);
@@ -377,13 +377,14 @@ function update(time){
     
    //adding bars to sea level bar graph
     
-     d3.selectAll(".barrect").remove();//remove the bars each time slider changes
-      
-   svg.selectAll("rect")
+    d3.selectAll(".seaBar").remove();//remove the bars each time slider changes
+    d3.selectAll(".co2Bar").remove();
+    d3.selectAll(".seaIceBar").remove();
+   svg.selectAll("rect.seaBar")
       .data(seadata)//function sealine until now
       .enter()
       .append("rect")
-      .attr("class","barrect")
+      .attr("class","seaBar")
       .style("fill", function(d){
        return changesealevelcolor(d.y)
    })//use function to make color of it
@@ -392,18 +393,18 @@ function update(time){
       .attr("width", seax.rangeBand())
       .attr("y", function(d) { return seay(d.y); })
       .attr("height", function(d) { return seaheight - seay(d.y); })
-      .attr("id",function(d, i ){ console.log("indicator added");d.indicator="svg"; d.id = "svg_"+i; return d.id;})    .on("mouseover",mouseover).on("mouseout",mouseout);
+      .attr("id",function(d, i ){ console.log("indicator added");d.indicator="svg"; d.id = "svg_"+i; return d.id;}).on("mouseover",mouseover).on("mouseout",mouseout);
     
        //adding bars to co2 ice bar graph
        var co2data=[];
        for(i=0;i<=time;i++){
          co2data.push(co2bubble[i]);
       }
-      svg1.selectAll("rect")
+      svg1.selectAll("rect.co2Bar")
       .data(co2data)//function sealine until now
       .enter()
       .append("rect")
-      .attr("class","barrect")
+      .attr("class","co2Bar")
       .style("fill", function(d){
        return changeco2color(d.y);
                                 
@@ -413,8 +414,7 @@ function update(time){
       .attr("width", co2x.rangeBand())
       .attr("y", function(d) { return co2y(d.y); })
       .attr("height", function(d) { return co2height - co2y(d.y); })
-.attr("id",function(d, i){d.indicator="svg1"; d.id="svg1_"+i; return d.id;})
-  .on("mouseover", mouseover).on("mouseout",mouseout);
+.attr("id",function(d, i){d.indicator="svg1"; d.id="svg1_"+i; return d.id;}).on("mouseover", mouseover).on("mouseout",mouseout);
       
       
     //adding bars to sea ice bar graph
@@ -422,11 +422,11 @@ function update(time){
     for(i=0;i<=time;i++){
         seaicedata.push(glacierline[i]);
     }     
-      svg2.selectAll("rect")
+      svg2.selectAll("rect.seaIceBar")
       .data(seaicedata)//function sealine until now
       .enter()
       .append("rect")
-      .attr("class","barrect")
+      .attr("class","seaIceBar")
       .style("fill", function(d){
           return changeicecolor(d.x);
       })
