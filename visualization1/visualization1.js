@@ -190,7 +190,7 @@ d3.csv("factors.csv", function (error, data){
 		    d3.select("#Temprature").classed("fade", false);
 		    focus.attr("transform", "translate(" + xScale(d.year) + "," + yScale(d.val) + ")");
 		    focus.select("text#yearLabel").text("year:"+d.year); 
-		    focus.select("text#valueLabel").text("value:"+d.val.toFixed(2));  
+		    focus.select("text#valueLabel").text("value:"+d.val.toFixed(2)+" °F");  
 		}
 
 		function mouseout (d) {
