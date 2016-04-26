@@ -351,7 +351,7 @@ function update(time){
     });
     wave.attr("transform", "translate(" + (-time*2)+ "," + (attrY-48) + ")")
   
-    
+
   
     //scale for seaice in polarbear graph
     xScale = d3.scale.linear().domain([1,d3.max(glacierline, function (point) {
@@ -363,6 +363,15 @@ function update(time){
     var xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(15);
     
     var attrX=xScale(glacierline[time].x);
+    
+    rectangle1.style("fill",function(d){
+        return changeicecolor(seaicedata[time].x);
+    });
+    rectangle1.attr("transform", "translate("+ (attrX-500) + "," + (attrY-478) + ")")
+     
+    icewave.style("fill",function(d){
+        return changeicecolor(seaicedata[time].x);
+    });
   
     rectangle1.attr("transform", "translate("+ (attrX-500) + "," + (attrY-478) + ")")
     icewave.attr("transform", "translate("+(attrX-550) + ", "+(attrY-127)+")")
