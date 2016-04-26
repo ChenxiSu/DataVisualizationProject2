@@ -150,7 +150,7 @@ var rectangle = svgContainer.append("rect")
                              .attr("y", 450)
                              .attr("width", 500)
                              .attr("height", 500)
-                             .attr("fill", "#47A4CD")    
+                             .attr("fill", "#82CDD3")    
 var lineData = [{ "x": 0,   "y": 50},  { "x": 100,  "y": 0},
                     { "x": 180,  "y": 50}, { "x": 300,   "y": 0},
                { "x": 350,   "y": 50},{ "x": 400,   "y": 0},{ "x": 500,   "y": 50},  { "x": 650,  "y": 0}, { "x": 700,  "y": 50},
@@ -166,7 +166,7 @@ var lineFunction = d3.svg.line()
 var wave=svgContainer.append("path")
                      .attr("d", lineFunction(lineData))
                      .attr("transform", "translate(0,400)")
-                     .attr("fill", "#47A4CD");
+                     .attr("fill", "#82CDD3");
     
 //initail state must be the level at start year
 var rectangle1 = svgContainer.append("rect")
@@ -329,18 +329,49 @@ function update(time){
     
     var attrY=yScale(sealine[(time)].y);
   
+    var seadata=[];
+    for(i=0;i<=time;i++){
+        seadata.push(sealine[i]);
+      //  console.log(seadata);
+    }
+     var seaicedata=[];
+    for(i=0;i<=time;i++){
+        seaicedata.push(glacierline[i]);
+    }     
+    
+    d3.selectAll(".searect").remove();
+   
+    rectangle.style("fill",function(d){
+        return changesealevelcolor(seadata[time].y);
+    });
     rectangle.attr("transform", "translate(0," + (attrY-450) + ")")
+              
+    wave.style("fill",function(d){
+        return changesealevelcolor(seadata[time].y);
+    });
     wave.attr("transform", "translate(" + (-time*2)+ "," + (attrY-48) + ")")
+  
+
   
     //scale for seaice in polarbear graph
     xScale = d3.scale.linear().domain([1,d3.max(glacierline, function (point) {
            return point.x;
         })]).range([0, width]);
-  
+    
+    
    
     var xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(15);
     
     var attrX=xScale(glacierline[time].x);
+    
+    rectangle1.style("fill",function(d){
+        return changeicecolor(seaicedata[time].x);
+    });
+    rectangle1.attr("transform", "translate("+ (attrX-500) + "," + (attrY-478) + ")")
+     
+    icewave.style("fill",function(d){
+        return changeicecolor(seaicedata[time].x);
+    });
   
     rectangle1.attr("transform", "translate("+ (attrX-500) + "," + (attrY-478) + ")")
     icewave.attr("transform", "translate("+(attrX-550) + ", "+(attrY-127)+")")
@@ -360,7 +391,9 @@ function update(time){
       .enter()
       .append("rect")
       .attr("class","barrect")
-      .style("fill", "steelblue")//use function to make color of it
+      .style("fill", function(d){
+       return changesealevelcolor(d.y)
+   })//use function to make color of it
       .attr("x", function(d) { 
         return seax(d.x); })
       .attr("width", seax.rangeBand())
@@ -402,7 +435,9 @@ function update(time){
       .enter()
       .append("rect")
       .attr("class","barrect")
-      .style("fill", "steelblue")
+     .style("fill", function(d){
+          return changeicecolor(d.x);
+      })
       .attr("x", function(d) { 
         return icex(d.y); })
       .attr("width", icex.rangeBand())
@@ -636,6 +671,28 @@ svg1.append("g")
         .range(["lightgrey", "grey"]);
 
          var attrcolor=cloudcolor(d);
+         return attrcolor;
+    }
+    
+    
+    function changesealevelcolor(d){
+         var seacolor = d3.scale.linear().domain(d3.extent(sealine, function (point) 
+        {
+         return point.y;
+        }))
+        .range(["#82CDD3", "#1E6CA2"]);
+
+         var attrcolor=seacolor(d);
+         return attrcolor;
+    }
+    function changeicecolor(d){
+         var icecolor = d3.scale.linear().domain(d3.extent(glacierline, function (point) 
+        {
+         return point.x;
+        }))
+        .range(["white", "#BEEBFA"]);
+
+         var attrcolor=icecolor(d);
          return attrcolor;
     }
 </script>
