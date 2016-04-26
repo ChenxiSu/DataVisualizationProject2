@@ -2,31 +2,31 @@
 var width = 1000;
 var height = 680;
 var padding = 50;
-var svg = d3.select("#causes").append("svg").attr("width", width)
+var svgLineGraph = d3.select("#causes").append("svg").attr("width", width)
 	.attr("height",height).style("background-color","lightgrey");
-var xScale = d3.scale.linear().domain([1880, 2013]).range([2*padding, width-padding]);
-var yScale = d3.scale.linear().domain([-1,1]).range([height-padding, 2*padding]);
+var xScaleLineGraph = d3.scale.linear().domain([1880, 2013]).range([2*padding, width-padding]);
+var yScaleLineGraph = d3.scale.linear().domain([-1,1]).range([height-padding, 2*padding]);
 
-var xAxis = d3.svg.axis().scale(xScale).orient("bottom").tickFormat("");
+var xAxisLineGraph = d3.svg.axis().scale(xScale).orient("bottom").tickFormat("");
 
-var yAxis = d3.svg.axis().scale(yScale).orient("left");
+var yAxisLineGraph = d3.svg.axis().scale(yScale).orient("left");
 
-svg.append("g").attr("transform", "translate(0,"+(2*padding+(height-3*padding)/2)+")")
-.attr("class", "axis").call(xAxis).selectAll("line").remove();
+svgLineGraph.append("g").attr("transform", "translate(0,"+(2*padding+(height-3*padding)/2)+")")
+.attr("class", "axis").call(xAxisLineGraph).selectAll("line").remove();
 
-svg.append("g").attr("transform", "translate("+ 2*padding + ",0)")
-.attr("class", "axis").call(yAxis);
+svgLineGraph.append("g").attr("transform", "translate("+ 2*padding + ",0)")
+.attr("class", "axis").call(yAxisLineGraph);
 
-svg.append("text").attr("x",width/4).attr("y",30).attr("font-size",20).attr("font-weight","bold").text("Factors that may be warming the world (1880-2005)");
-svg.append("text").attr("x",2*padding-20).attr("y",2*padding-20).text("(°F) Hotter");
-svg.append("text").attr("x",2*padding-20).attr("y",650).text("(°F) Cooler");
-svg.append("text").attr("x",5).attr("y",height/2).text("1880-1910");
-svg.append("text").attr("x",5).attr("y",height/2+15).text("Average");
+svgLineGraph.append("text").attr("x",width/4).attr("y",30).attr("font-size",20).attr("font-weight","bold").text("Factors that may be warming the world (1880-2005)");
+svgLineGraph.append("text").attr("x",2*padding-20).attr("y",2*padding-20).text("(°F) Hotter");
+svgLineGraph.append("text").attr("x",2*padding-20).attr("y",650).text("(°F) Cooler");
+svgLineGraph.append("text").attr("x",5).attr("y",height/2).text("1880-1910");
+svgLineGraph.append("text").attr("x",5).attr("y",height/2+15).text("Average");
 
 // vorronoi function
 var voronoi = d3.geom.voronoi()
-    .x(function(d) { return xScale(d.year); })
-    .y(function(d) { return yScale(d.val); })
+    .x(function(d) { return xScaleLineGraph(d.year); })
+    .y(function(d) { return yScaleLineGraph(d.val); })
     .clipExtent([[0, 0], [width, height]]);
 
 //load data from csv
@@ -124,7 +124,7 @@ d3.csv("factors.csv", function (error, data){
 
 		var line = d3.svg.line()
 		.interpolate("basis").x(function (d) {
-		return xScale(d.year);} ).y(function (d) { return yScale(d.val); });
+		return xScaleLineGraph(d.year);} ).y(function (d) { return yScaleLineGraph(d.val); });
 
 		// array of objects: name, array of values
 		var factors = [{"name":"Green House Gas", "values":greenHouseGasValues,"color":"green", "lineID":"greenHouseGas"},
@@ -135,7 +135,7 @@ d3.csv("factors.csv", function (error, data){
 		{"name":"Temprature ","values":tempratureYearlyValues, "color":"yellow","lineID":"Temprature"}];
 
 		//generate path
-		svg.append("g").selectAll("path").data(factors)
+		svgLineGraph.append("g").selectAll("path .outline line").data(factors)
 	    .enter().append("path").attr("class","outline line").attr("id",function (d) {return d.lineID;})
 	      	.attr("d", function(d) { 
 	      		
@@ -150,14 +150,14 @@ d3.csv("factors.csv", function (error, data){
 	    //generate legend for each line
 	    
 	    factors.forEach(function (d, i){
-	    	svg.append("line").attr("x1", 120).attr("y1", 2*padding+20*(i+1))
+	    	svgLineGraph.append("line").attr("x1", 120).attr("y1", 2*padding+20*(i+1))
 	    .attr("x2",220).attr("y2",2*padding+20*(i+1)).attr("stroke",d.color).attr("stroke-width",3);
-	    	svg.append("text").attr("x",240).attr("y",2*padding+20*(i+1)).text(d.name).attr("fill",d.color).attr("font-size",18);
+	    	svgLineGraph.append("text").attr("x",240).attr("y",2*padding+20*(i+1)).text(d.name).attr("fill",d.color).attr("font-size",18);
 	    })
 
 	    //generate the info board of cur point
 
-		var focus = svg.append("g")
+		var focus = svgLineGraph.append("g")
 	    .attr("transform", "translate(-100,-100)")
 	    .attr("class", "focus");
 
@@ -168,10 +168,10 @@ d3.csv("factors.csv", function (error, data){
 
 		// building to voronoi path group
 		
-		var voronoiGroup = svg.append("g").attr("class", "voronoi");
+		var voronoiGroup = svgLineGraph.append("g").attr("class", "voronoi");
 		voronoiGroup.selectAll("path")
 	      .data(voronoi(d3.nest()
-	      	.key(function(d) { return xScale(d.year)+","+yScale(d.val); })  
+	      	.key(function(d) { return xScaleLineGraph(d.year)+","+yScaleLineGraph(d.val); })  
 	          .rollup(function(v) { return v[0]; }) 
 	          .entries(d3.merge(factors.map(function (d) {
 	          	return d.values;
@@ -188,9 +188,9 @@ d3.csv("factors.csv", function (error, data){
         	d3.selectAll("path.line").classed("fade",true);
 		    d3.select(id).classed("fade",false);
 		    d3.select("#Temprature").classed("fade", false);
-		    focus.attr("transform", "translate(" + xScale(d.year) + "," + yScale(d.val) + ")");
+		    focus.attr("transform", "translate(" + xScaleLineGraph(d.year) + "," + yScaleLineGraph(d.val) + ")");
 		    focus.select("text#yearLabel").text("year:"+d.year); 
-		    focus.select("text#valueLabel").text("value:"+d.val.toFixed(2)+" °F");  
+		    focus.select("text#valueLabel").text("value:"+d.val.toFixed(2));  
 		}
 
 		function mouseout (d) {
