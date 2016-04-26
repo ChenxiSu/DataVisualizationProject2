@@ -163,7 +163,7 @@ var px =  ((myRange.valueAsNumber - parseInt(myRange.min)) * off) - (myValue.off
 
   myRange.oninput =function(){
     updateTextInput(this.value);
-    let px = ((myRange.valueAsNumber - parseInt(myRange.min)) * off) - (myValue.offsetWidth / 2)-40;
+    var px = ((myRange.valueAsNumber - parseInt(myRange.min)) * off) - (myValue.offsetWidth / 2)-40;
     myValue.innerHTML = +myRange.value + 1979;
     currentyear=myValue.innerHTML;
     myValue.parentElement.style.left = px + 'px';
@@ -505,7 +505,7 @@ var px =  ((myRange.valueAsNumber - parseInt(myRange.min)) * off) - (myValue.off
 
   myRange.oninput =function(){
     updateTextInput(this.value);
-    let px = ((myRange.valueAsNumber - parseInt(myRange.min)) * off) - (myValue.offsetWidth / 2)-40;
+    var px = ((myRange.valueAsNumber - parseInt(myRange.min)) * off) - (myValue.offsetWidth / 2)-40;
     myValue.innerHTML = +myRange.value + 1979;
     currentyear=myValue.innerHTML;
     console.log(currentyear);

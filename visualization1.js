@@ -7,9 +7,9 @@ var svgLineGraph = d3.select("#causes").append("svg").attr("width", width)
 var xScaleLineGraph = d3.scale.linear().domain([1880, 2013]).range([2*padding, width-padding]);
 var yScaleLineGraph = d3.scale.linear().domain([-1,1]).range([height-padding, 2*padding]);
 
-var xAxisLineGraph = d3.svg.axis().scale(xScale).orient("bottom").tickFormat("");
+var xAxisLineGraph = d3.svg.axis().scale(xScaleLineGraph).orient("bottom").tickFormat("");
 
-var yAxisLineGraph = d3.svg.axis().scale(yScale).orient("left");
+var yAxisLineGraph = d3.svg.axis().scale(yScaleLineGraph).orient("left");
 
 svgLineGraph.append("g").attr("transform", "translate(0,"+(2*padding+(height-3*padding)/2)+")")
 .attr("class", "axis").call(xAxisLineGraph).selectAll("line").remove();
@@ -109,7 +109,7 @@ d3.csv("factors.csv", function (error, data){
 		
 		//generate array of objects for futrue data processing
 		data.forEach( function (line) {
-			console.log(line);
+			//console.log(line);
 			var year = parseInt(line.year);
 			var tempratureYearlyObj = {
 				"year":year, "val":parseFloat(line.Annual_Mean)
