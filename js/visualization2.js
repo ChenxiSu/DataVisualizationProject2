@@ -759,7 +759,7 @@ var lineSmooth = d3.svg.line().x(function(d) {
 //adds a path with lineSmooth and draws out the polar bear svg element
 polarb = svgContainer.append("path")
     .attr("d", lineSmooth(polarbear))
-    .attr("stroke", "#3B5870")
+    .attr("stroke", "#47A4CD")
     .attr("stroke-width", 1)
     .attr("fill", "#F4F5F9")
     .attr("transform", "scale(.5,.5),translate(21.21,650)");
