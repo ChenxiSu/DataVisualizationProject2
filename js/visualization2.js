@@ -776,9 +776,9 @@ var svg1 = d3.select("#co2bargraph").append("svg")
 svg1.append("text")
     .attr("id", "title")
     .attr("text-anchor", "middle")
-    .style("font-size", "20px")
+    .style("font-size", "25px")
     .style("text-decoration", "none")
-    .style("fill", "#4682B4")
+    .style("fill", "#333333")
     .text("1979 - ")
     .attr("transform", "translate(250, 0)");
 
@@ -906,43 +906,48 @@ function mouseover(d) {
     d3.select(selector).classed("selectedBar", true);
 
     //judges which svg to move to
-    if (d.indicator === "svg") {
-        infoBoard = svg.append("g").attr("transform", "translate(-100,-100)");
-        transY = seay(d.y);
-        transX = seax(d.x);
-
-        //show rect with text in it.
-	    infoBoard.append("rect").attr("width", 80).attr("height", 40).attr("fill", "lightgrey").attr("transform", "translate(-30,-45)");
-	    infoBoard.append("text").attr("id", "yearLabel").attr("transform", "translate(-19,-27)").style("font-size", "10px");
-	    infoBoard.append("text").attr("id", "valueLabel").attr("transform", "translate(-19,-17)").style("font-size", "10px");
-	    infoBoard.attr("transform", "translate(" + transX + "," + transY + ")");
-	    infoBoard.select("text#yearLabel").text("year: " + d.x);
-    	infoBoard.select("text#valueLabel").text("value: " + parseFloat(d.y).toFixed(2)+" in");
-    
-    } else if (d.indicator === "svg1") {
+    if (d.indicator === "svg1") {
         infoBoard = svg1.append("g").attr("transform", "translate(-100,-100)");
         transY = co2y(d.y);
         transX = co2x(d.x);
 
         //show rect with text in it.
-	    infoBoard.append("rect").attr("width", 120).attr("height", 40).attr("fill", "lightgrey").attr("transform", "translate(-30,-45)");
-	    infoBoard.append("text").attr("id", "yearLabel").attr("transform", "translate(-19,-27)").style("font-size", "10px");
-	    infoBoard.append("text").attr("id", "valueLabel").attr("transform", "translate(-19,-17)").style("font-size", "10px");
+        infoBoard.append("svg:path").attr("d", d3.svg.symbol().type("triangle-up")).attr("transform","rotate(180) translate(-7)").style("fill", "#CBD7E0");
+	    infoBoard.append("rect").attr("width", 80).attr("height", 40).attr("fill", "#CBD7E0").attr("opacity",".7").attr("transform", "translate(-33,-45)");
+	    infoBoard.append("text").attr("id", "yearLabel").attr("transform", "translate(-28,-27)").style("font-size", "8px");
+	    infoBoard.append("text").attr("id", "valueLabel").attr("transform", "translate(-28,-17)").style("font-size", "8px");
 	    infoBoard.attr("transform", "translate(" + transX + "," + transY + ")");
-	    infoBoard.select("text#yearLabel").text("year: " + d.x);
-        infoBoard.select("text#valueLabel").text("value: " + parseFloat(d.y).toFixed(2)+" ppm");
+	    infoBoard.select("text#yearLabel").text("Year: " + d.x);
+        infoBoard.select("text#valueLabel").text("Value: " + parseFloat(d.y).toFixed(2)+" ppm");
+
     } else if (d.indicator === "svg2") {
         infoBoard = svg2.append("g").attr("transform", "translate(-100,-100)");
         transX = icex(d.y);
         transY = icey(d.x);
 
         //show rect with text in it.
-	    infoBoard.append("rect").attr("width", 120).attr("height", 40).attr("fill", "lightgrey").attr("transform", "translate(-30,-45)");
-	    infoBoard.append("text").attr("id", "yearLabel").attr("transform", "translate(-19,-27)").style("font-size", "10px");
-	    infoBoard.append("text").attr("id", "valueLabel").attr("transform", "translate(-19,-17)").style("font-size", "10px");
+        infoBoard.append("svg:path").attr("d", d3.svg.symbol().type("triangle-up")).attr("transform","rotate(180) translate(-7)").style("fill", "#CBD7E0");
+	    infoBoard.append("rect").attr("width", 80).attr("height", 40).attr("fill", "#CBD7E0").attr("transform", "translate(-33,-45)");
+	    infoBoard.append("text").attr("id", "yearLabel").attr("transform", "translate(-28,-27)").style("font-size", "8px");
+	    infoBoard.append("text").attr("id", "valueLabel").attr("transform", "translate(-28,-17)").style("font-size", "8px");
 	    infoBoard.attr("transform", "translate(" + transX + "," + transY + ")");
-	    infoBoard.select("text#yearLabel").text("year: " + d.x);
-        infoBoard.select("text#valueLabel").text("value: " + parseFloat(d.y).toFixed(2)+" km\u00B2");
+	    infoBoard.select("text#yearLabel").text("Year: " + d.x);
+        infoBoard.select("text#valueLabel").text("Value: " + parseFloat(d.y).toFixed(2)+" km\u00B2");
+
+    } else {
+        infoBoard = svg3.append("g").attr("transform", "translate(-100,-100)");
+        transY = seay(d.y);
+        transX = seax(d.x);
+
+        //show rect with text in it.
+        infoBoard.append("svg:path").attr("d", d3.svg.symbol().type("triangle-up")).attr("transform","rotate(180) translate(-7)").style("fill", "#CBD7E0").attr("opacity",".7");
+	    infoBoard.append("rect").attr("width", 60).attr("height", 40).attr("fill", "#CBD7E0").attr("opacity",".7").attr("transform", "translate(-23,-45)");
+	    infoBoard.append("text").attr("id", "yearLabel").attr("transform", "translate(-18,-27)").style("font-size", "8px");
+	    infoBoard.append("text").attr("id", "valueLabel").attr("transform", "translate(-18,-17)").style("font-size", "8px");
+	    infoBoard.attr("transform", "translate(" + transX + "," + transY + ")");
+	    infoBoard.select("text#yearLabel").text("Year: " + d.x);
+    	infoBoard.select("text#valueLabel").text("Value: " + parseFloat(d.y).toFixed(2)+" in");
+    
     }
 
 }

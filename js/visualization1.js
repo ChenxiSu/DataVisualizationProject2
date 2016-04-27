@@ -150,10 +150,10 @@ d3.csv("data/factors.csv", function (error, data){
 	    .attr("transform", "translate(-100,-100)")
 	    .attr("class", "focus");
 
-		focus.append("circle").attr("r", 5).attr("fill","#5D75CB");
-		focus.append("rect").attr("width",120).attr("height",60).attr("fill","lightgrey").attr("opacity",0.5).attr("transform","translate(-40,15)");
-		focus.append("text").attr("id","yearLabel").attr("transform","translate(-30,35)");
-		focus.append("text").attr("id","valueLabel").attr("transform","translate(-30,60)");
+		focus.append("svg:path").attr("d", d3.svg.symbol().type("triangle-up")).style("fill", "#CBD7E0").attr("opacity",0.7);
+		focus.append("rect").attr("width",105).attr("height",60).attr("fill","#CBD7E0").attr("opacity",0.7).attr("transform","translate(-45,5)");
+		focus.append("text").attr("id","yearLabel").attr("transform","translate(-35,28)");
+		focus.append("text").attr("id","valueLabel").attr("transform","translate(-35,53)");
 
 		// building to voronoi path group
 		
@@ -178,8 +178,8 @@ d3.csv("data/factors.csv", function (error, data){
 		    d3.select(id).classed("fade",false);
 		    d3.select("#temperature").classed("fade", false);
 		    focus.attr("transform", "translate(" + xScaleLineGraph(d.year) + "," + yScaleLineGraph(d.val) + ")");
-		    focus.select("text#yearLabel").text("year:"+d.year); 
-		    focus.select("text#valueLabel").text("value:"+d.val.toFixed(2)+"°F");  
+		    focus.select("text#yearLabel").text("Year:"+d.year); 
+		    focus.select("text#valueLabel").text("Value:"+d.val.toFixed(2)+" °F");  
 		}
 
 		function mouseout (d) {

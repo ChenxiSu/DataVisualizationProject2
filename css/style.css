@@ -28,6 +28,13 @@ path.fade{ fill : none ; stroke-width:1 ;stroke:grey; opacity: 0.2;}
     position: absolute;
     text-align: center;
   }
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
 .axis path,
 .axis line {
     fill: none;
@@ -82,5 +89,5 @@ button:focus {
   outline: none;
 }
 .selectedBar{
-  fill: #5D75CB!important;
+  fill: #52B2C0!important;
 }
