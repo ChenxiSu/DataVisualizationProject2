@@ -44,8 +44,8 @@ var OzoneValues = [];
 var SolarValues = [];
 var VolcanicValues = [];
 
-var tempratureYearlyValues = [];//1880-2013
-var tempratureAvgValues = [];//1882-2012
+var temperatureYearlyValues = [];//1880-2013
+var temperatureAvgValues = [];//1882-2012
 
 d3.csv("data/factors.csv", function (error, data){
 
@@ -101,15 +101,15 @@ d3.csv("data/factors.csv", function (error, data){
 		data.forEach( function (line) {
 			//console.log(line);
 			var year = parseInt(line.year);
-			var tempratureYearlyObj = {
+			var temperatureYearlyObj = {
 				"year":year, "val":parseFloat(line.Annual_Mean)
 			};
-			tempratureYearlyValues.push( tempratureYearlyObj);
+			temperatureYearlyValues.push( temperatureYearlyObj);
 
-			var tempratureAvgObj = {
+			var temperatureAvgObj = {
 				"year":year, "val": parseFloat(line.five_year_Mean)
 			};
-			tempratureAvgValues.push(tempratureAvgObj);
+			temperatureAvgValues.push(temperatureAvgObj);
 		});
 
 		var line = d3.svg.line()
@@ -122,7 +122,7 @@ d3.csv("data/factors.csv", function (error, data){
 		{"name":"Ozone","values":OzoneValues,"color":"#47A4CD","lineID":"Ozone"},
 		{"name":"Solar", "values":SolarValues,"color":"#012C5F","lineID":"Solar"},
 		{"name":"Volcanic","values":VolcanicValues,"color":"#43D2E7","lineID":"Volcanic"}, 
-		{"name":"Temprature ","values":tempratureYearlyValues, "color":"#F9E8A3","lineID":"Temperature"}];
+		{"name":"temperature ","values":temperatureYearlyValues, "color":"#F9E8A3","lineID":"Temperature"}];
 
 		//generate path
 		svgLineGraph.append("g").selectAll("path .outline line").data(factors)
@@ -177,7 +177,7 @@ d3.csv("data/factors.csv", function (error, data){
         	var id = "#"+d.line;
         	d3.selectAll("path.line").classed("fade",true);
 		    d3.select(id).classed("fade",false);
-		    d3.select("#Temprature").classed("fade", false);
+		    d3.select("#temperature").classed("fade", false);
 		    focus.attr("transform", "translate(" + xScaleLineGraph(d.year) + "," + yScaleLineGraph(d.val) + ")");
 		    focus.select("text#yearLabel").text("year:"+d.year); 
 		    focus.select("text#valueLabel").text("value:"+d.val.toFixed(2));  
