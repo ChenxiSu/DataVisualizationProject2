@@ -146,8 +146,8 @@ d3.csv("data/factors.csv", function (error, data){
 	    .attr("transform", "translate(-100,-100)")
 	    .attr("class", "focus");
 
-		focus.append("svg:path").attr("d", d3.svg.symbol().type("triangle-up")).attr("transform","rotate(180) translate(0,3)").style("fill", "#9BB2C4").attr("opacity",0.5);
-		focus.append("rect").attr("width",105).attr("height",60).attr("fill","#9BB2C4").attr("opacity",0.5).attr("transform","translate(-50,-68)");
+		focus.append("svg:path").attr("d", d3.svg.symbol().type("triangle-up")).attr("transform","rotate(180) translate(0,3)").style("fill", "#CBD7E0");
+		focus.append("rect").attr("width",105).attr("height",60).attr("fill","#CBD7E0").attr("transform","translate(-50,-68)");
 		focus.append("text").attr("id","yearLabel").attr("transform","translate(-40,-45)");
 		focus.append("text").attr("id","valueLabel").attr("transform","translate(-40,-23)");
 
