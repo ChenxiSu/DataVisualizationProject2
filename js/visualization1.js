@@ -26,7 +26,6 @@ svgLineGraph.append("text").attr("x",5).attr("y",height/2+15).text("Average");
 var voronoi = d3.geom.voronoi()
     .x(function(d) { return xScaleLineGraph(d.year); })
     .y(function(d) { return yScaleLineGraph(d.val); })
-    .clipExtent([[0, 0], [width, height]]);
 
 //load data from csv
 
