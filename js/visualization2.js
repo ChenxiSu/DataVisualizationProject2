@@ -760,9 +760,9 @@ var lineSmooth = d3.svg.line().x(function(d) {
 //adds a path with lineSmooth and draws out the polar bear svg element
 polarb = svgContainer.append("path")
     .attr("d", lineSmooth(polarbear))
-    .attr("stroke", "#47A4CD")
+    .attr("stroke", "lightgrey")
     .attr("stroke-width", 1)
-    .attr("fill", "#F4F5F9")
+    .attr("fill", "#EFF1F5")
     .attr("transform", "scale(.5,.5),translate(21.21,650)");
 
 //adds new svg for co2 bar graph    
