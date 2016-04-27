@@ -94,7 +94,7 @@ d3.csv("data/factors.csv", function (error, data){
 		VolcanicValues.push(VolcanicObj);
 	});
 
-	d3.csv("data/Temperature.csv", function (error, data){
+	d3.csv("data/Temperature1.csv", function (error, data){
 		
 		//generate array of objects for futrue data processing
 		data.forEach( function (line) {
@@ -111,8 +111,8 @@ d3.csv("data/factors.csv", function (error, data){
 			temperatureAvgValues.push(temperatureAvgObj);
 		});
 
-		var line = d3.svg.line()
-		.interpolate("basis").x(function (d) {
+		var line = d3.svg.line()//.interpolate("basis")
+		.x(function (d) {
 		return xScaleLineGraph(d.year);} ).y(function (d) { return yScaleLineGraph(d.val); });
 
 		// array of objects: name, array of values
@@ -179,7 +179,7 @@ d3.csv("data/factors.csv", function (error, data){
 		    d3.select("#temperature").classed("fade", false);
 		    focus.attr("transform", "translate(" + xScaleLineGraph(d.year) + "," + yScaleLineGraph(d.val) + ")");
 		    focus.select("text#yearLabel").text("year:"+d.year); 
-		    focus.select("text#valueLabel").text("value:"+d.val.toFixed(2));  
+		    focus.select("text#valueLabel").text("value:"+d.val.toFixed(2)+"°F");  
 		}
 
 		function mouseout (d) {

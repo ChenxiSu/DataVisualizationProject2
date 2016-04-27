@@ -909,23 +909,41 @@ function mouseover(d) {
         infoBoard = svg.append("g").attr("transform", "translate(-100,-100)");
         transY = seay(d.y);
         transX = seax(d.x);
+
+        //show rect with text in it.
+	    infoBoard.append("rect").attr("width", 80).attr("height", 40).attr("fill", "lightgrey").attr("transform", "translate(-30,-45)");
+	    infoBoard.append("text").attr("id", "yearLabel").attr("transform", "translate(-19,-27)").style("font-size", "10px");
+	    infoBoard.append("text").attr("id", "valueLabel").attr("transform", "translate(-19,-17)").style("font-size", "10px");
+	    infoBoard.attr("transform", "translate(" + transX + "," + transY + ")");
+	    infoBoard.select("text#yearLabel").text("year: " + d.x);
+    	infoBoard.select("text#valueLabel").text("value: " + parseFloat(d.y).toFixed(2)+" in");
+    
     } else if (d.indicator === "svg1") {
         infoBoard = svg1.append("g").attr("transform", "translate(-100,-100)");
         transY = co2y(d.y);
         transX = co2x(d.x);
+
+        //show rect with text in it.
+	    infoBoard.append("rect").attr("width", 120).attr("height", 40).attr("fill", "lightgrey").attr("transform", "translate(-30,-45)");
+	    infoBoard.append("text").attr("id", "yearLabel").attr("transform", "translate(-19,-27)").style("font-size", "10px");
+	    infoBoard.append("text").attr("id", "valueLabel").attr("transform", "translate(-19,-17)").style("font-size", "10px");
+	    infoBoard.attr("transform", "translate(" + transX + "," + transY + ")");
+	    infoBoard.select("text#yearLabel").text("year: " + d.x);
+        infoBoard.select("text#valueLabel").text("value: " + parseFloat(d.y).toFixed(2)+" ppm");
     } else if (d.indicator === "svg2") {
         infoBoard = svg2.append("g").attr("transform", "translate(-100,-100)");
         transX = icex(d.y);
         transY = icey(d.x);
+
+        //show rect with text in it.
+	    infoBoard.append("rect").attr("width", 120).attr("height", 40).attr("fill", "lightgrey").attr("transform", "translate(-30,-45)");
+	    infoBoard.append("text").attr("id", "yearLabel").attr("transform", "translate(-19,-27)").style("font-size", "10px");
+	    infoBoard.append("text").attr("id", "valueLabel").attr("transform", "translate(-19,-17)").style("font-size", "10px");
+	    infoBoard.attr("transform", "translate(" + transX + "," + transY + ")");
+	    infoBoard.select("text#yearLabel").text("year: " + d.x);
+        infoBoard.select("text#valueLabel").text("value: " + parseFloat(d.y).toFixed(2)+" km\u00B2");
     }
 
-    //show rect with text in it.
-    infoBoard.append("rect").attr("width", 80).attr("height", 40).attr("fill", "lightgrey").attr("transform", "translate(-30,-45)");
-    infoBoard.append("text").attr("id", "yearLabel").attr("transform", "translate(-19,-27)").style("font-size", "10px");
-    infoBoard.append("text").attr("id", "valueLabel").attr("transform", "translate(-19,-17)").style("font-size", "10px");
-    infoBoard.attr("transform", "translate(" + transX + "," + transY + ")");
-    infoBoard.select("text#yearLabel").text("year: " + d.x);
-    infoBoard.select("text#valueLabel").text("value: " + parseFloat(d.y).toFixed(2));
 }
 
 //removes highlight around previously selected bar
