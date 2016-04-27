@@ -494,31 +494,6 @@ function update(time) {
     d3.selectAll(".co2Bar").remove();
     d3.selectAll(".seaIceBar").remove();
 
-    svg.selectAll("rect.seaBar")
-        .data(seadata)//gets data on the sea up to last scroll year 
-        .enter()
-        .append("rect")
-        .attr("class", "seaBar")
-        .style("fill", function(d) {
-            return changesealevelcolor(d.y);//changes color to reflect change in sea level
-        })//changes color to reflect change in sea level
-        .attr("x", function(d) {
-            return seax(d.x);
-        })
-        .attr("width", seax.rangeBand())
-        .attr("y", function(d) {
-            return seay(d.y);
-        })
-        .attr("height", function(d) {
-            return seaheight - seay(d.y);
-        })
-        .attr("id", function(d, i) {
-            d.indicator = "svg";
-            d.id = "svg_" + i;
-            return d.id;
-        })
-        .on("mouseover", mouseover).on("mouseout", mouseout);
-
     //adds bars to co2 ice bar graph
     var co2data = [];
     for (i = 0; i <= time; i++) {
@@ -576,6 +551,31 @@ function update(time) {
         .attr("id", function(d, i) {
             d.indicator = "svg2";
             d.id = "svg2_" + i;
+            return d.id;
+        })
+        .on("mouseover", mouseover).on("mouseout", mouseout);
+
+      svg3.selectAll("rect.seaBar")
+        .data(seadata)//gets data on the sea up to last scroll year 
+        .enter()
+        .append("rect")
+        .attr("class", "seaBar")
+        .style("fill", function(d) {
+            return changesealevelcolor(d.y);//changes color to reflect change in sea level
+        })//changes color to reflect change in sea level
+        .attr("x", function(d) {
+            return seax(d.x);
+        })
+        .attr("width", seax.rangeBand())
+        .attr("y", function(d) {
+            return seay(d.y);
+        })
+        .attr("height", function(d) {
+            return seaheight - seay(d.y);
+        })
+        .attr("id", function(d, i) {
+            d.indicator = "svg";
+            d.id = "svg_" + i;
             return d.id;
         })
         .on("mouseover", mouseover).on("mouseout", mouseout);
@@ -765,44 +765,6 @@ polarb = svgContainer.append("path")
     .attr("fill", "#F4F5F9")
     .attr("transform", "scale(.5,.5),translate(21.21,650)");
 
-//adds new svg for sea level bar graph
-var svg = d3.select("#seabargraph").append("svg")
-    .attr("width", seawidth + seamargin.left + seamargin.right)
-    .attr("height", seaheight + seamargin.top + seamargin.bottom)
-    .append("g")
-    .attr("transform",
-        "translate(" + seamargin.left + "," + seamargin.top + ")");
-
-svg.append("text")
-    .attr("id", "title")
-    .attr("text-anchor", "middle")
-    .style("font-size", "20px")
-    .style("text-decoration", "none")
-    .style("fill", "#4682B4")
-    .text("1979 - ")
-    .attr("transform", "translate(250, 0)");
-
-svg.append("g")
-    .attr("class", "x axis")
-    .attr("transform", "translate(0," + seaheight + ")")
-    .call(seaxAxis)
-    .selectAll("line").remove()
-    .selectAll("text")
-    .style("text-anchor", "end")
-    .attr("dx", "-.8em")
-    .attr("dy", "-.55em")
-    .attr("transform", "rotate(-90)");
-
-svg.append("g")
-    .attr("class", "y axis")
-    .call(seayAxis)
-    .append("text")
-    .attr("transform", "translate(173,0)")
-    .attr("y", 6)
-    .attr("dy", ".71em")
-    .style("text-anchor", "end")
-    .text("Cumulative Sea Level Change (in)");
-
 //adds new svg for co2 bar graph    
 var svg1 = d3.select("#co2bargraph").append("svg")
     .attr("width", co2width + co2margin.left + co2margin.right)
@@ -810,6 +772,15 @@ var svg1 = d3.select("#co2bargraph").append("svg")
     .append("g")
     .attr("transform",
         "translate(" + co2margin.left + "," + co2margin.top + ")");
+
+svg1.append("text")
+    .attr("id", "title")
+    .attr("text-anchor", "middle")
+    .style("font-size", "20px")
+    .style("text-decoration", "none")
+    .style("fill", "#4682B4")
+    .text("1979 - ")
+    .attr("transform", "translate(250, 0)");
 
 svg1.append("g")
     .attr("class", "x axis")
@@ -895,6 +866,36 @@ svg2.append("g")
     .attr("dy", ".71em")
     .style("text-anchor", "end")
     .text("Sea Ice Extent Level (km\u00B2)");
+
+
+//adds new svg for sea level bar graph
+var svg3 = d3.select("#seabargraph").append("svg")
+    .attr("width", seawidth + seamargin.left + seamargin.right)
+    .attr("height", seaheight + seamargin.top + seamargin.bottom)
+    .append("g")
+    .attr("transform",
+        "translate(" + seamargin.left + "," + seamargin.top + ")");
+
+svg3.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + seaheight + ")")
+    .call(seaxAxis)
+    .selectAll("line").remove()
+    .selectAll("text")
+    .style("text-anchor", "end")
+    .attr("dx", "-.8em")
+    .attr("dy", "-.55em")
+    .attr("transform", "rotate(-90)");
+
+svg3.append("g")
+    .attr("class", "y axis")
+    .call(seayAxis)
+    .append("text")
+    .attr("transform", "translate(173,0)")
+    .attr("y", 6)
+    .attr("dy", ".71em")
+    .style("text-anchor", "end")
+    .text("Cumulative Sea Level Change (in)");
 
 //show year and value when mouse moves over a bar  
 function mouseover(d) {
