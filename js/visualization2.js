@@ -310,7 +310,7 @@ var lineFunction3 = d3.svg.line()
 
 var icewave = svgContainer.append("path")
     .attr("d", lineFunction3(icelineData))
-    .attr("transform", "translate(-50,350)")
+    .attr("transform", "translate(-49,351)")
     .attr("fill", "#B5DCE9");
 
 var glacierline = [];
@@ -329,7 +329,7 @@ var seamargin = {
 
 //add x and y scale and axis for years and values for sea level
 var seax = d3.scale.ordinal().rangeRoundBands([0, seawidth], .05);
-var seay = d3.scale.linear().domain([4, 10]).range([seaheight, 0]);
+var seay = d3.scale.linear().domain([4, 11]).range([seaheight, 0]);
 
 var seaxAxis = d3.svg.axis()
     .scale(seax)
@@ -338,7 +338,8 @@ var seaxAxis = d3.svg.axis()
 var seayAxis = d3.svg.axis()
     .scale(seay)
     .orient("left")
-    .ticks(10);
+    .ticks(8);
+
 var co2margin = {
         top: 20,
         right: 20,
@@ -350,7 +351,7 @@ var co2margin = {
 
 //add x and y scale for years and values for co2 concentration
 var co2x = d3.scale.ordinal().rangeRoundBands([0, co2width], .05);
-var co2y = d3.scale.linear().domain([300, 400]).range([co2height, 0]);
+var co2y = d3.scale.linear().domain([300, 420]).range([co2height, 0]);
 
 var co2xAxis = d3.svg.axis()
     .scale(co2x)
@@ -359,7 +360,7 @@ var co2xAxis = d3.svg.axis()
 var co2yAxis = d3.svg.axis()
     .scale(co2y)
     .orient("left")
-    .ticks(10);
+    .ticks(8);
 
 var icemargin = {
         top: 20,
