@@ -17,7 +17,6 @@ svgLineGraph.append("g").attr("transform", "translate(0,"+(2*padding+(height-3*p
 svgLineGraph.append("g").attr("transform", "translate("+ 2*padding + ",0)")
 .attr("class", "axis").call(yAxisLineGraph);
 
-svgLineGraph.append("text").attr("x",width/4).attr("y",30).attr("font-size",20).attr("font-weight","bold").text("Factors that may be warming the world (1880-2005)");
 svgLineGraph.append("text").attr("x",2*padding-20).attr("y",2*padding-20).text("(°F) Hotter");
 svgLineGraph.append("text").attr("x",2*padding-20).attr("y",650).text("(°F) Cooler");
 svgLineGraph.append("text").attr("x",5).attr("y",height/2).text("1880-1910");
@@ -47,15 +46,6 @@ var VolcanicValues = [];
 
 var tempratureYearlyValues = [];//1880-2013
 var tempratureAvgValues = [];//1882-2012
-
-// var baseValueOfGreenHouseGas;
-// var baseValueOfOrbitalChange;
-// var baseValueOfOzne;
-// var baseValueOfSolar;
-// var baseValueOfVolcanic;
-
-// var baseValueTempratureYearly;
-// var baseValueTempratureFiveMean;
 
 d3.csv("data/factors.csv", function (error, data){
 
@@ -132,7 +122,7 @@ d3.csv("data/factors.csv", function (error, data){
 		{"name":"Ozone","values":OzoneValues,"color":"#47A4CD","lineID":"Ozone"},
 		{"name":"Solar", "values":SolarValues,"color":"#012C5F","lineID":"Solar"},
 		{"name":"Volcanic","values":VolcanicValues,"color":"#43D2E7","lineID":"Volcanic"}, 
-		{"name":"Temprature ","values":tempratureYearlyValues, "color":"#F9E8A3","lineID":"Temprature"}];
+		{"name":"Temprature ","values":tempratureYearlyValues, "color":"#F9E8A3","lineID":"Temperature"}];
 
 		//generate path
 		svgLineGraph.append("g").selectAll("path .outline line").data(factors)
