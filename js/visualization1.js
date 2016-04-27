@@ -122,7 +122,7 @@ d3.csv("data/factors.csv", function (error, data){
 		{"name":"Ozone","values":OzoneValues,"color":"#47A4CD","lineID":"Ozone"},
 		{"name":"Solar", "values":SolarValues,"color":"#012C5F","lineID":"Solar"},
 		{"name":"Volcanic","values":VolcanicValues,"color":"#43D2E7","lineID":"Volcanic"}, 
-		{"name":"temperature ","values":temperatureYearlyValues, "color":"#F9E8A3","lineID":"Temperature"}];
+		{"name":"Temperature ","values":temperatureYearlyValues, "color":"#F9E8A3","lineID":"Temperature"}];
 
 		//generate path
 		svgLineGraph.append("g").selectAll("path .outline line").data(factors)
