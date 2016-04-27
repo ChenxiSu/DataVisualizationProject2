@@ -94,7 +94,7 @@ d3.csv("data/factors.csv", function (error, data){
 		VolcanicValues.push(VolcanicObj);
 	});
 
-	d3.csv("data/Temperature1.csv", function (error, data){
+	d3.csv("data/Temperature.csv", function (error, data){
 		
 		//generate array of objects for futrue data processing
 		data.forEach( function (line) {
