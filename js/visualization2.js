@@ -912,7 +912,7 @@ function mouseover(d) {
     }
 
     //show rect with text in it.
-    infoBoard.append("rect").attr("width", 80).attr("height", 40).attr("fill", "#F4F5F9").attr("stroke", "#012D60").attr("transform", "translate(-30,-45)");
+    infoBoard.append("rect").attr("width", 80).attr("height", 40).attr("fill", "lightgrey").attr("transform", "translate(-30,-45)");
     infoBoard.append("text").attr("id", "yearLabel").attr("transform", "translate(-19,-27)").style("font-size", "10px");
     infoBoard.append("text").attr("id", "valueLabel").attr("transform", "translate(-19,-17)").style("font-size", "10px");
     infoBoard.attr("transform", "translate(" + transX + "," + transY + ")");

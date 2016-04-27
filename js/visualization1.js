@@ -151,8 +151,8 @@ d3.csv("data/factors.csv", function (error, data){
 	    .attr("transform", "translate(-100,-100)")
 	    .attr("class", "focus");
 
-		focus.append("circle").attr("r", 5).attr("fill","red");
-		focus.append("rect").attr("width",120).attr("height",60).attr("fill","white").attr("opacity",0.8).attr("transform","translate(-40,15)");
+		focus.append("circle").attr("r", 5).attr("fill","#5D75CB");
+		focus.append("rect").attr("width",120).attr("height",60).attr("fill","lightgrey").attr("opacity",0.5).attr("transform","translate(-40,15)");
 		focus.append("text").attr("id","yearLabel").attr("transform","translate(-30,35)");
 		focus.append("text").attr("id","valueLabel").attr("transform","translate(-30,60)");
 
