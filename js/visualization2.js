@@ -360,6 +360,7 @@ var co2xAxis = d3.svg.axis()
 var co2yAxis = d3.svg.axis()
     .scale(co2y)
     .orient("left")
+    .ticks(7);
    
 
 
