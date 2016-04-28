@@ -782,7 +782,7 @@ svg1.append("text")
     .style("font-size", "25px")
     .style("text-decoration", "none")
     .style("fill", "#333333")
-    .text("1979 - ")
+    .text("1979 - 1979")
     .attr("transform", "translate(250, 0)");
 
 svg1.append("g")

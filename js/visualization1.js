@@ -188,4 +188,5 @@ d3.csv("data/factors.csv", function (error, data){
 			d3.selectAll("path.line").classed("fade",false);
 			focus.attr("transform", "translate(-100,-100)");
 		}
-	});	
+	});
+});
