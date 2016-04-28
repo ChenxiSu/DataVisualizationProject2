@@ -22,7 +22,8 @@ svgLineGraph.append("text").attr("x",2*padding-20).attr("y",650).text("(°F) Coo
 svgLineGraph.append("text").attr("x",5).attr("y",height/2).text("1880-1910");
 svgLineGraph.append("text").attr("x",5).attr("y",height/2+15).text("Average");
 
-// vorronoi function
+// voronoi function, citation from https://bl.ocks.org/mbostock/8033015
+
 var voronoi = d3.geom.voronoi()
     .x(function(d) { return xScaleLineGraph(d.year); })
     .y(function(d) { return yScaleLineGraph(d.val); })
@@ -62,12 +63,14 @@ d3.csv("data/factors.csv", function (error, data){
 		aveOfSolar += parseFloat(data[i].Solar);
 		aveOfVolcanic += parseFloat(data[i].Volcanic);
 	}
+	//calculate the average value of each factor from 1880-1910
 	aveGreenHouseGas = aveGreenHouseGas/(numberOfYears+1);
 	aveOfOrbitalChange = aveOfOrbitalChange/(numberOfYears+1);
 	aveOfOzne = aveOfOzne/(numberOfYears+1);
 	aveOfSolar = aveOfSolar/(numberOfYears+1);
 	aveOfVolcanic = aveOfVolcanic/(numberOfYears+1);
 
+	//get the relative value of factors by subtracting the average 
 	data.forEach(function (line) {
 		var year = parseInt(line.year);
 		var greenHouseGasObj = {"year":year,"val":parseFloat(line.Greenhouse_gases)-aveGreenHouseGas};
@@ -94,11 +97,12 @@ d3.csv("data/factors.csv", function (error, data){
 		VolcanicValues.push(VolcanicObj);
 	});
 
+	//load temperature data
 	d3.csv("data/Temperature.csv", function (error, data){
 		
 		//generate array of objects for futrue data processing
 		data.forEach( function (line) {
-			//console.log(line);
+			
 			var year = parseInt(line.year);
 			var temperatureYearlyObj = {
 				"year":year, "val":parseFloat(line.Annual_Mean)
