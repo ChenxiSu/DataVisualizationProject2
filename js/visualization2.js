@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 //sets the year for the scroller bar
 var currentyear;
 var myRange = document.querySelector('#myRange');
@@ -2079,5 +2078,3 @@ function changeicecolor(d) {
     var attrcolor = icecolor(d);
     return attrcolor;
 }
-
->>>>>>> 9f5cf38820637ebb0d9174798416d96ee43f8f1c
