@@ -511,7 +511,6 @@ function update(time) {
             return changeco2color(d.y);
         })//changes color to reflect change in co2
         .attr("x", function(d) {
-            console.log(co2x(d.x))
             return co2x(d.x);
         })
         .attr("width", co2x.rangeBand())
@@ -522,7 +521,6 @@ function update(time) {
             return co2height - co2y(d.y);
         })
         .attr("id", function(d, i) {
-        console.log(d);
             d.indicator = "svg1";
             d.id = "svg1_" + i;
             return d.id;
@@ -542,7 +540,6 @@ function update(time) {
         .append("rect")
         .attr("class", "seaIceBar")
         .style("fill", function(d) {
-          console.log(changeicecolor(d.x))
             return changeicecolor(d.x);
         })//changes color to reflect change in sea ice extension
         .attr("x", function(d) {
