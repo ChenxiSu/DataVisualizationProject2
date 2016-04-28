@@ -150,10 +150,10 @@ d3.csv("data/factors.csv", function (error, data){
 	    .attr("transform", "translate(-100,-100)")
 	    .attr("class", "focus");
 
-		focus.append("svg:path").attr("d", d3.svg.symbol().type("triangle-up")).style("fill", "#CBD7E0").attr("opacity",0.7);
-		focus.append("rect").attr("width",105).attr("height",60).attr("fill","#CBD7E0").attr("opacity",0.7).attr("transform","translate(-45,5)");
-		focus.append("text").attr("id","yearLabel").attr("transform","translate(-35,28)");
-		focus.append("text").attr("id","valueLabel").attr("transform","translate(-35,53)");
+		focus.append("svg:path").attr("d", d3.svg.symbol().type("triangle-up")).attr("transform","rotate(180) translate(0,3)").style("fill", "#CBD7E0");
+		focus.append("rect").attr("width",105).attr("height",60).attr("fill","#CBD7E0").attr("transform","translate(-50,-68)");
+		focus.append("text").attr("id","yearLabel").attr("transform","translate(-40,-45)");
+		focus.append("text").attr("id","valueLabel").attr("transform","translate(-40,-23)");
 
 		// building to voronoi path group
 		
