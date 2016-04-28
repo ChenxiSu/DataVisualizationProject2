@@ -971,7 +971,7 @@ function mouseover(d) {
 
         //show rect with text in it.
         infoBoard.append("svg:path").attr("d", d3.svg.symbol().type("triangle-up")).attr("transform","rotate(180) translate(-7)").style("fill", "#CBD7E0");
-	    infoBoard.append("rect").attr("width", 80).attr("height", 30).attr("fill", "#CBD7E0").attr("transform", "translate(-33,-35)");
+	    infoBoard.append("rect").attr("width", 65).attr("height", 30).attr("fill", "#CBD7E0").attr("transform", "translate(-33,-35)");
 	    infoBoard.append("text").attr("id", "yearLabel").attr("transform", "translate(-28,-22)").style("font-size", "8px");
 	    infoBoard.append("text").attr("id", "valueLabel").attr("transform", "translate(-28,-12)").style("font-size", "8px");
 	    infoBoard.attr("transform", "translate(" + transX + "," + transY + ")");
