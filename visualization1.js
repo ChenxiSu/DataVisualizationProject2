@@ -96,8 +96,9 @@ d3.csv("data/factors.csv", function (error, data){
 
 	d3.csv("data/Temperature.csv", function (error, data){
 		
-		//generate array of objects for future data processing
+		//generate array of objects for futrue data processing
 		data.forEach( function (line) {
+			//console.log(line);
 			var year = parseInt(line.year);
 			var temperatureYearlyObj = {
 				"year":year, "val":parseFloat(line.Annual_Mean)
@@ -110,7 +111,7 @@ d3.csv("data/factors.csv", function (error, data){
 			temperatureAvgValues.push(temperatureAvgObj);
 		});
 
-		var line = d3.svg.line()
+		var line = d3.svg.line()//.interpolate("basis")
 		.x(function (d) {
 		return xScaleLineGraph(d.year);} ).y(function (d) { return yScaleLineGraph(d.val); });
 
@@ -128,6 +129,7 @@ d3.csv("data/factors.csv", function (error, data){
 	      	.attr("d", function(d) { 
 	      		
 	      		//add path id to each point
+
 		      	d.values.forEach( function(dd){
 		      		dd.line = d.lineID; 
 		      	});
@@ -135,6 +137,7 @@ d3.csv("data/factors.csv", function (error, data){
 	      	}).attr("stroke",function (d){return d.color});
 
 	    //generate legend for each line
+	    
 	    factors.forEach(function (d, i){
 	    	svgLineGraph.append("line").attr("x1", 120).attr("y1", 2*padding+20*(i+1))
 	    .attr("x2",220).attr("y2",2*padding+20*(i+1)).attr("stroke",d.color).attr("stroke-width",3);
@@ -142,16 +145,18 @@ d3.csv("data/factors.csv", function (error, data){
 	    })
 
 	    //generate the info board of cur point
+
 		var focus = svgLineGraph.append("g")
 	    .attr("transform", "translate(-100,-100)")
 	    .attr("class", "focus");
 
-		focus.append("svg:path").attr("d", d3.svg.symbol().type("triangle-up")).attr("transform","rotate(180) translate(0,3)").style("fill", "#CBD7E0");
-		focus.append("rect").attr("width",105).attr("height",60).attr("fill","#CBD7E0").attr("transform","translate(-50,-68)");
-		focus.append("text").attr("id","yearLabel").attr("transform","translate(-40,-45)");
-		focus.append("text").attr("id","valueLabel").attr("transform","translate(-40,-23)");
+		focus.append("svg:path").attr("d", d3.svg.symbol().type("triangle-up")).style("fill", "#CBD7E0").attr("opacity",0.7);
+		focus.append("rect").attr("width",105).attr("height",60).attr("fill","#CBD7E0").attr("opacity",0.7).attr("transform","translate(-45,5)");
+		focus.append("text").attr("id","yearLabel").attr("transform","translate(-35,28)");
+		focus.append("text").attr("id","valueLabel").attr("transform","translate(-35,53)");
 
 		// building to voronoi path group
+		
 		var voronoiGroup = svgLineGraph.append("g").attr("class", "voronoi");
 		voronoiGroup.selectAll("path")
 	      .data(voronoi(d3.nest()
