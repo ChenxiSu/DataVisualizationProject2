@@ -783,7 +783,7 @@ svg1.append("text")
     .style("text-decoration", "none")
     .style("fill", "#333333")
     .text("1979 - 1979")
-    .attr("transform", "translate(250, 0)");
+    .attr("transform", "translate(280, 0)");
 
 svg1.append("g")
     .attr("class", "x axis")
@@ -956,8 +956,8 @@ function mouseover(d) {
         transX = co2x(d.x);
 
         //show rect with text in it.
-        infoBoard.append("svg:path").attr("d", d3.svg.symbol().type("triangle-up")).attr("transform","rotate(180) translate(-7)").style("fill", "#CBD7E0");
-	    infoBoard.append("rect").attr("width", 80).attr("height", 30).attr("fill", "#CBD7E0").attr("transform", "translate(-33,-35)");
+        infoBoard.append("svg:path").attr("d", d3.svg.symbol().type("triangle-up")).attr("transform","rotate(180) translate(-7)").style("fill", "#CBD7E0").style("opacity",".9");
+	    infoBoard.append("rect").attr("width", 80).attr("height", 30).attr("fill", "#CBD7E0").style("opacity",".9").attr("transform", "translate(-33,-35)");
 	    infoBoard.append("text").attr("id", "yearLabel").attr("transform", "translate(-28,-22)").style("font-size", "8px");
 	    infoBoard.append("text").attr("id", "valueLabel").attr("transform", "translate(-28,-12)").style("font-size", "8px");
 	    infoBoard.attr("transform", "translate(" + transX + "," + transY + ")");
@@ -970,10 +970,10 @@ function mouseover(d) {
         transY = icey(d.x);
 
         //show rect with text in it.
-        infoBoard.append("svg:path").attr("d", d3.svg.symbol().type("triangle-up")).attr("transform","rotate(180) translate(-7)").style("fill", "#CBD7E0");
-	    infoBoard.append("rect").attr("width", 65).attr("height", 30).attr("fill", "#CBD7E0").attr("transform", "translate(-33,-35)");
-	    infoBoard.append("text").attr("id", "yearLabel").attr("transform", "translate(-28,-22)").style("font-size", "8px");
-	    infoBoard.append("text").attr("id", "valueLabel").attr("transform", "translate(-28,-12)").style("font-size", "8px");
+        infoBoard.append("svg:path").attr("d", d3.svg.symbol().type("triangle-up")).attr("transform","rotate(180) translate(-7)").style("fill", "#CBD7E0").style("opacity",".9");
+	    infoBoard.append("rect").attr("width", 65).attr("height", 30).attr("fill", "#CBD7E0").style("opacity",".9").attr("transform", "translate(-25,-35)");
+	    infoBoard.append("text").attr("id", "yearLabel").attr("transform", "translate(-21,-22)").style("font-size", "8px");
+	    infoBoard.append("text").attr("id", "valueLabel").attr("transform", "translate(-21,-12)").style("font-size", "8px");
 	    infoBoard.attr("transform", "translate(" + transX + "," + transY + ")");
 	    infoBoard.select("text#yearLabel").text("Year: " + d.y);
         infoBoard.select("text#valueLabel").text("Value: " + parseFloat(d.x).toFixed(2)+" km\u00B2");
@@ -984,8 +984,8 @@ function mouseover(d) {
         transX = seax(d.x);
 
         //show rect with text in it.
-        infoBoard.append("svg:path").attr("d", d3.svg.symbol().type("triangle-up")).attr("transform","rotate(180) translate(-7)").style("fill", "#CBD7E0");
-	    infoBoard.append("rect").attr("width", 60).attr("height", 30).attr("fill", "#CBD7E0").attr("transform", "translate(-23,-35)");
+        infoBoard.append("svg:path").attr("d", d3.svg.symbol().type("triangle-up")).attr("transform","rotate(180) translate(-7)").style("fill", "#CBD7E0").style("opacity",".9");
+	    infoBoard.append("rect").attr("width", 60).attr("height", 30).attr("fill", "#CBD7E0").style("opacity",".9").attr("transform", "translate(-23,-35)");
 	    infoBoard.append("text").attr("id", "yearLabel").attr("transform", "translate(-18,-22)").style("font-size", "8px");
 	    infoBoard.append("text").attr("id", "valueLabel").attr("transform", "translate(-18,-12)").style("font-size", "8px");
 	    infoBoard.attr("transform", "translate(" + transX + "," + transY + ")");
