@@ -415,7 +415,7 @@ d3.csv("data/co2year.csv", function(error, data) {
     }));
 })
 
-d3.csv("data/N_09_area.csv", function(error, data) {
+d3.csv("data/seaiceextent.csv", function(error, data) {
 
     extent = data;
     glacierline = extent.map(function(area) {
