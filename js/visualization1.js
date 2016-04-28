@@ -189,7 +189,6 @@ d3.csv("data/factors.csv", function (error, data){
 			focus.attr("transform", "translate(-100,-100)");
 		}
 	});	
-=======
 // generate the svg and x/y axis
 var width = 1150;
 var height = 680;
